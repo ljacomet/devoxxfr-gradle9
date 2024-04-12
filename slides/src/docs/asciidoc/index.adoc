@@ -9,7 +9,8 @@
 
 [.title.right]
 Louis Jacomet +
-JFokus 2024
+Paul Merlin +
+Devoxx France 2024
 
 include::chapters/_1_agenda.adoc[]
 

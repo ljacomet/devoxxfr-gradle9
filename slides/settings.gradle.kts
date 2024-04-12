@@ -1,1 +1,1 @@
-rootProject.name = "jfokus-gradle9"
+rootProject.name = "devoxxfr-gradle9"
