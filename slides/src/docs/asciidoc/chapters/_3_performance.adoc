@@ -179,6 +179,31 @@ image::gradle/bg-7.png[background, size=cover]
 * The amount of required work will heavily depend on the 3rd party plugins you use and the amount of custom build logic you have.
 ****
 
+=== Configuration Cache Report
+image::gradle/bg-7.png[background, size=cover]
+
+[%step]
+* Useful to understand CC inputs
+* Built-in
+* image:cc-report-inputs.png[width=80%]
+
+=== Configuration Cache Report
+image::gradle/bg-7.png[background, size=cover]
+
+[%step]
+* Useful to understand CC problems
+* Got much nicer in Gradle 8.7 with filtered exceptions
+* image:cc-report-problems.png[]
+
+=== Space Usage Analysis
+image::gradle/bg-7.png[background, size=cover]
+
+[%step]
+* Useful if your cached state is too big
+* External tool link:https://github.com/gradle/gcc2speedscope[gradle/gcc2speedscope]
+* Helps identify "task state leaks"
+* image:gcc2speedscope.png[width=80%]
+
 === What performance benefits?
 image::gradle/bg-7.png[background, size=cover]
 
