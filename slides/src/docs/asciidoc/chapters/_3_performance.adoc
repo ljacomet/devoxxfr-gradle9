@@ -231,7 +231,7 @@ image::gradle/bg-7.png[background, size=cover]
 * What about dependency upgrades and other build focused engineering tasks?
 
 [background-color="#02303a"]
-=== Project isolation
+=== Isolated Projects
 image::gradle/bg-7.png[background, size=cover]
 
 === Did you say cache miss?
