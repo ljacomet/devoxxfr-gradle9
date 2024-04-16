@@ -47,12 +47,23 @@ link:https://blog.gradle.org/our-approach-to-faster-compilation[blog/our-approac
 === Gradle Configuration Cache
 image::gradle/bg-7.png[background, size=cover]
 
-[.notes]
---
-* What is it?
-* What are the requirements?
-* Why does it matter?
---
+=== Gradle Configuration Cache
+image::gradle/bg-7.png[background, size=cover]
+
+* The Configuration Cache is
+[%step]
+** a feature that significantly improves build performance
+** by caching the result of the configuration phase
+** and reusing this for subsequent builds.
+
+=== Gradle Configuration Cache
+image::gradle/bg-7.png[background, size=cover]
+
+* Enable it Today, it is *stable* since Gradle 8.1!
+[%step]
+** `--configuration-cache` on the command line
+** `org.gradle.configuration-cache=true` +
+   in your `gradle.properties`
 
 === Gradle build anatomy
 image::gradle/bg-7.png[background, size=cover]
@@ -60,7 +71,7 @@ image::gradle/bg-7.png[background, size=cover]
 image::gradle-build-anatomy.png[]
 
 [.small.right.top-margin]
-Bars not to scale
+*Bars not to scale*
 
 === Configuration phase
 image::gradle/bg-7.png[background, size=cover]
@@ -98,7 +109,8 @@ link:https://docs.gradle.org/current/userguide/configuration_cache.html#config_c
 === Example of invalid input
 image::gradle/bg-7.png[background, size=cover]
 
-```kotlin
+[source,kotlin]
+----
 abstract class SomeTask : DefaultTask() {
 
     @get:Input lateinit var sourceSet: SourceSet
@@ -109,11 +121,12 @@ abstract class SomeTask : DefaultTask() {
         // ...
     }
 }
-```
+----
 
 needs to become
 
-```kotlin
+[source,kotlin]
+----
 abstract class SomeTask : DefaultTask() {
 
     @get:InputFiles @get:Classpath
@@ -125,12 +138,14 @@ abstract class SomeTask : DefaultTask() {
         // ...
     }
 }
-```
+----
 
 configured with
-```kotlin
+
+[source,kotlin]
+----
 classpath.from(sourceSet.compileClasspath)
-```
+----
 
 === Why does it matter?
 image::gradle/bg-7.png[background, size=cover]
@@ -147,6 +162,41 @@ image::gradle/bg-7.png[background, size=cover]
 [background-color="#02303a"]
 === Demo
 image::gradle/bg-7.png[background, size=cover]
+
+=== Can I use it on my build?
+image::gradle/bg-7.png[background, size=cover]
+
+[%step]
+* It depends on your build
+* Most plugins out there are already compatible
+* You can selectively declare incompatible tasks +
+  [.small]#`tasks.some { notCompatibleWithConfigurationCache("because") }`#
+* You may have to refactor custom build-logic
+* This is about applying best practices anyway
+
+[.notes]
+****
+* The amount of required work will heavily depend on the 3rd party plugins you use and the amount of custom build logic you have.
+****
+
+=== What performance benefits?
+image::gradle/bg-7.png[background, size=cover]
+
+[%step]
+* It depends on your build
+* It's not only about avoiding the configuration phase
+* All tasks will run in parallel, always
+* Small builds will mostly benefit from more parallelism
+* Large builds will also benefit from avoided configuration
+
+=== What performance benefits?
+image::gradle/bg-7.png[background, size=cover]
+
+[%step]
+* For example: Square, on a *large* Android build
+* Early adopters - link:https://developer.squareup.com/blog/5-400-hours-a-year-saving-developers-time-and-sanity-with-gradles/[Blog Post] - December 2022
+* _Saving 5,400 hours a year with Gradle's Configuration Cache_
+* _Recovering an estimated $1.1 million in lost productivity annually_
 
 === Limitations
 image::gradle/bg-7.png[background, size=cover]
