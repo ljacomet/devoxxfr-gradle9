@@ -4,60 +4,203 @@ image::gradle/bg-4.png[background, size=cover]
 
 &#x1F52E;
 
+[background-color="#02303a"]
+=== Gradle 9 objectives
+image::gradle/bg-4.png[background, size=cover]
+
+🐘
+
 === Gradle 9 objectives
 image::gradle/bg-4.png[background, size=cover]
 
 [%step]
-* Configuration cache active by default
-* Stable isolated projects
+* &#x1F680; Performance
+* &#x1F4A1; Comprehensibility
+* 🐘 Miscellaneous
+
+=== Gradle 9 - &#x1F680; Performance
+image::gradle/bg-4.png[background, size=cover]
+
+[%step]
+* Configuration Cache by default
+[%step]
+** With an opt-out
+** Maybe automatic degradation
+* Isolated Projects as stable
+[%step]
+** As an opt-in
+** Ready for adoption
+
+=== Gradle 9 - &#x1F4A1; Comprehensibility
+image::gradle/bg-4.png[background, size=cover]
+
+[%step]
 * Provider API 1.0
 ** Feature complete for supported use cases
-* Provider API migration
-** And its associated tooling
-* Many bug fixes and improvements
-* Q3 or Q4 2024 release (tentative)
+* Provider API Migration
+** Source-compatible migration of all core plugins
 
-[.small.right.top-margin]
-link:https://github.com/orgs/gradle/projects/31/views/1[gradle-roadmap]
+=== Gradle 9 - 🐘 Miscellaneous
+image::gradle/bg-4.png[background, size=cover]
+
+[%step]
+* Kotlin Language 2.0 support in our Kotlin DSL
+* Use the K2 compiler and benefit from its performance
+* Many bug fixes and improvements
+
+=== Gradle 9.0
+image::gradle/bg-4.png[background, size=cover]
+
+* Q3 or Q4 2024 release (tentative)
+* link:https://github.com/orgs/gradle/projects/31/views/1[gradle-roadmap]
+
+image::roadmap.png[]
+
+[background-color="#02303a"]
+=== Declarative Gradle
+image::gradle/bg-4.png[background, size=cover]
+
+🐘
+
+=== Declarative Gradle
+image::gradle/bg-4.png[background, size=cover]
+
+> The presence of code constructs in the software definition, such as variables, local methods and conditional expressions, makes it hard for software developers to work with the build.
+>
+> It also makes refactoring more difficult for the IDE and other tools to implement.
+
+[.notes]
+****
+* While it has long been a best practice that build scripts should be declarative, and the build logic should be kept in plugins, this is not the reality for many projects.
+* We’ve seen projects in the wild that mix declarative and imperative code and make build scripts that are long and complex.
+* Gradle-specific concepts used in build scripts are not always familiar to software developers.
+* This can make Gradle less approachable for developers unfamiliar with Gradle.
+* At the same time, it makes it difficult for the IDEs to offer reliable support for editing build scripts.
+****
 
 === Declarative Gradle
 image::gradle/bg-4.png[background, size=cover]
 
 [%step]
-* Better separate software definition from build logic
-* Using a restricted DSL for the software definition
-* Exposing domain specific concepts
-* Providing a better editing experience in the IDE
+* New *experimental* initiative
+* Working group with Google, JetBrains and Gradle.
+* First link:https://blog.gradle.org/declarative-gradle[blog post] in November 2023
+* Early link:https://github.com/gradle/declarative-gradle[prototypes] already available
+* First EAP scheduled mid-2024
 
-[.small.right.top-margin]
-link:https://blog.gradle.org/declarative-gradle[blog/declarative-gradle]
+=== Declarative Gradle
+image::gradle/bg-4.png[background, size=cover]
+
+[%step]
+* Clear separation of software definition from build logic
+* Declarative configuration language
+* Raised abstraction
+* First class IDE experience
 
 === Peek at current prototype
+image::gradle/bg-4.png[background, size=cover]
 
-```kotlin
+.A Java library
+[source,kotlin]
+----
+javaLibrary {
+    javaVersion = 21
+    dependencies {
+        implementation("com.google.guava:guava:32.1.3-jre")
+    }
+}
+----
+
+.A Java application
+[source,kotlin]
+----
+javaApplication {
+    javaVersion = 21
+    mainClass = "com.example.App"
+    dependencies {
+        implementation("com.google.guava:guava:32.1.3-jre")
+    }
+}
+----
+
+Disclaimer::
+This will certainly change
+
+=== Peek at current prototype
+image::gradle/bg-4.png[background, size=cover]
+
+.An Android application
+[source,kotlin]
+----
+androidApplication {
+    jdkVersion = 17
+    compileSdk = 34
+    versionCode = 8
+    versionName = "0.1.2"
+    applicationId = "org.gradle.experimental.android.application"
+    namespace = "org.gradle.experimental.android.application"
+    dependencies {
+        implementation("com.google.guava:guava:32.1.3-jre")
+        implementation(project(":android-util"))
+    }
+    buildTypes {
+        release {
+            dependencies {
+                implementation("com.squareup.okhttp3:okhttp:4.2.2")
+            }
+            minifyEnabled = true
+        }
+        debug {
+            applicationIdSuffix = ".debug"
+        }
+    }
+}
+----
+
+=== Peek at current prototype
+image::gradle/bg-4.png[background, size=cover]
+
+.A Kotlin Multiplatform Library
+[source,kotlin]
+----
 kmpLibrary {
     dependencies {
-        api(libs.ktor.client.core)
+        implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.4.1")
     }
-
     targets {
         jvm {
-            jvmTarget = JvmTarget.JVM_14
-
+            jdkVersion = 14
             dependencies {
-                api(libs.commons.lang)
+                api("org.apache.commons:commons-lang3:3.14.0")
             }
         }
         js {
-            environment = JsEnvironment.NODE
-
+            environment = "node"
             dependencies {
-                implementation(libs.sqldelight.runtime)
+                implementation("com.squareup.sqldelight:runtime:1.5.5")
             }
         }
     }
 }
-```
+----
 
-Disclaimer::
-Will certainly change, most likely a lot
+=== Peek at current prototype
+image::gradle/bg-4.png[background, size=cover]
+
+[%step]
+* *Disclaimer:* this will certainly change
+* Prototypes available at link:https://github.com/gradle/declarative-gradle[gradle/declarative-gradle]
+* link:https://github.com/gradle/nowinandroid/tree/main-declarative[Now In Android] fork - `main-declarative` branch
+** You can import it in Android Studio
+** Android Studio Koala canary builds have syntax highlighting for declarative files
+
+=== Declarative Gradle
+image::gradle/bg-4.png[background, size=cover]
+
+[%step]
+* New *experimental* initiative
+* Clear separation of software definition from build logic
+* Declarative configuration language
+* Raised abstraction
+* First class IDE experience
+* First EAP scheduled mid-2024
