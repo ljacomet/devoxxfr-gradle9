@@ -1,7 +1,31 @@
 [background-color="#02303a"]
 == Thank you!
-image::gradle/bg-2.png[background, size=cover]
+image::gradle/bg-4-folks.png[background, size=cover]
 
-&#x2753;
+[cols="^.^2,^.^1",frame=none,grid=none,role=who-gradle]
+|===
+a|
+a|image::louis.png[]
 
-// TODO move who's who here
+[source,kotlin]
+----
+speaker {
+    name = "Louis Jacomet"
+    twitter = "@ljacomet"
+    mastodon = "@ljacomet@foojay.social"
+    github = "ljacomet"
+}
+----
+
+image::paul.jpg[]
+
+[source,kotlin]
+----
+speaker {
+    name = "Paul Merlin"
+    mastodon = "@eskatos@mastodon.social"
+    github = "eskatos"
+}
+----
+
+|===

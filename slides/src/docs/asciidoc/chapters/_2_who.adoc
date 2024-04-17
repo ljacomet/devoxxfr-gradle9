@@ -5,62 +5,6 @@ image::gradle/bg-1.png[background, size=cover]
 &#x1F9D1;&#x200D;&#x1F4BB; &#x1F9D1;&#x200D;&#x1F4BB;
 
 [%notitle]
-=== Louis
-image::gradle/bg-1.png[background, size=cover]
-
-image::louis.png[height=250,width=250]
-
-[source,kotlin]
-----
-speaker {
-    name = "Louis Jacomet"
-    company = "Gradle"
-    joined = 2018
-    position = "Support Team Lead"
-    previously = "Dependency Management, JVM"
-    past = listOf(
-        "Terracotta / Ehcache" in 2013,
-        "Devoxx Belgium Program Committee" since 2012,
-        "Contractor" in 2002,
-        "Java 'Hello, World!'" in 1997
-    )
-    failures = generateSequence(code) { bugs }
-    twitter = "@ljacomet"
-    mastodon = "@ljacomet@foojay.social"
-    github = "ljacomet"
-    extra = "Not fully figured out how to stay out of management !?!"
-}
-----
-
-
-[%notitle]
-=== Louis
-image::gradle/bg-1.png[background, size=cover]
-
-image::paul.jpg[height=250,width=250]
-
-[source,kotlin]
-----
-speaker {
-    name = "Paul Merlin"
-    company = "Gradle"
-    joined = 2015
-    position = "Declarative Gradle DSL Lead"
-    previously = "Configuration Cache, Kotlin DSL, Performance"
-    past = listOf(
-        "Kotlin 'Hello, World!'" in 2015,
-        "Qi4j / Apache Polygene" in 2009,
-        "Java 'Hello, World!'" in 1997,
-        "First gig!" in 1996,
-        "BASIC 'Hello, World!'" in 1986,
-    )
-    mastodon = "@eskatos@mastodon.social"
-    github = "eskatos"
-    failures = generateSequence(code) { bugs }
-}
-----
-
-[%notitle]
 === Gradle
 image::gradle/bg-1.png[background, size=cover]
 

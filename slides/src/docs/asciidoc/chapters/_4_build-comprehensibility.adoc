@@ -13,30 +13,34 @@ image::gradle/bg-6.png[background, size=cover]
 
 image::task-dag-examples.png[]
 
-=== Challenges
+=== Challenge: Evaluation Ordering
 image::gradle/bg-6.png[background, size=cover]
 
 [%step]
 * Evaluation ordering
-* `afterEvaluate` does not scale
+** `afterEvaluate` does not scale
 ** How "after" do you need to be?
+
+=== Challenge: Execution Ordering
+image::gradle/bg-6.png[background, size=cover]
+
+[%step]
 * Tasks produce files
 ** How do you make sure the consumer of that file `dependsOn` the producing task?
-
-// TODO two slides 1. eval ordering 2. exec ordering
 
 === Example
 image::gradle/bg-6.png[background, size=cover]
 
 [source,kotlin]
 ----
+val customTask = tasks.register<ComputeArtifactId>("customTask")
 subprojects {
     publishing {
         publications {
             create<MavenPublication>("mavenJava") {
                 from(components["java"])
                 afterEvaluate {
-                    artifactId = tasks.jar.archiveBaseName
+                    artifactId = customTask.get().artifactId.get()
                 }
             }
         }
@@ -49,7 +53,7 @@ image::gradle/bg-6.png[background, size=cover]
 
 image::laziness.png[]
 
-=== Enter the Provider API
+=== Provider API: Evaluation Ordering
 image::gradle/bg-6.png[background, size=cover]
 
 [%step]
@@ -57,12 +61,17 @@ image::gradle/bg-6.png[background, size=cover]
 ** Without caring about *when* it is set
 * Evaluation is done on demand
 ** Task does not run -> No inputs are computed
-* Output properties used as input track task dependencies
 
 [.small.right.top-margin]
 link:https://docs.gradle.org/current/userguide/lazy_configuration.html[docsg/lazy-configuration]
 
-// TODO two slides 1. eval ordering 2. exec ordering
+=== Provider API: Execution Ordering
+image::gradle/bg-6.png[background, size=cover]
+
+[%step]
+* Task output properties
+* &nbsp;&nbsp;&nbsp;&nbsp;used as input to another task
+* &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;track task dependencies automatically.
 
 [%notitle]
 === Task wiring example
@@ -93,13 +102,15 @@ producer {
 layout.buildDirectory = layout.projectDirectory.dir("output")
 ----
 
-[%notitle]
-=== Provider API javadoc
+=== Provider API - Lazy
 image::gradle/bg-6.png[background, size=cover]
 
-image::provider-api.png[]
+image::provider-api-lazy.png[]
 
-// TODO split two images: functional lazy - eager
+=== Provider API - Eager
+image::gradle/bg-6.png[background, size=cover]
+
+image::provider-api-eager.png[]
 
 === Adoption challenge
 image::gradle/bg-6.png[background, size=cover]
