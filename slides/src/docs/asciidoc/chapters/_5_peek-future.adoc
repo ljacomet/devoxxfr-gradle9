@@ -48,6 +48,7 @@ image::gradle/bg-4.png[background, size=cover]
 [%step]
 * Kotlin Language 2.0 support in our Kotlin DSL
 * Use the K2 compiler and benefit from its performance
+* Problems API
 * Many bug fixes and improvements
 
 === Gradle 9.0
