@@ -25,11 +25,12 @@ image::gradle/bg-4.png[background, size=cover]
 * Configuration Cache by default
 [%step]
 ** With an opt-out
-** Maybe automatic degradation
-* Isolated Projects as stable
+** Deprecation warning if not enabled in 8.x
+* Isolated Projects as incubating
 [%step]
 ** As an opt-in
-** Ready for adoption
+** Ready for early adopters
+** Stable as a stretch goal
 
 === Gradle 9 - &#x1F4A1; Comprehensibility
 image::gradle/bg-4.png[background, size=cover]
@@ -38,7 +39,8 @@ image::gradle/bg-4.png[background, size=cover]
 * Provider API 1.0
 ** Feature complete for supported use cases
 * Provider API Migration
-** Source-compatible migration of all core plugins
+** Binary compatible migration for 3rd party plugins
+** Source-compatible migration for local build logic
 
 === Gradle 9 - 🐘 Miscellaneous
 image::gradle/bg-4.png[background, size=cover]
@@ -51,7 +53,7 @@ image::gradle/bg-4.png[background, size=cover]
 === Gradle 9.0
 image::gradle/bg-4.png[background, size=cover]
 
-* Q3 or Q4 2024 release (tentative)
+* Q4 2024 release (tentative)
 * link:https://github.com/orgs/gradle/projects/31/views/1[gradle-roadmap]
 
 image::roadmap.png[]
@@ -82,20 +84,20 @@ image::gradle/bg-4.png[background, size=cover]
 image::gradle/bg-4.png[background, size=cover]
 
 [%step]
-* New *experimental* initiative
-* Working group with Google, JetBrains and Gradle.
-* First link:https://blog.gradle.org/declarative-gradle[blog post] in November 2023
-* Early link:https://github.com/gradle/declarative-gradle[prototypes] already available
-* First EAP scheduled mid-2024
+* Clear separation of software definition from build logic
+* Declarative configuration language
+* Raised abstraction
+* First class IDE experience
 
 === Declarative Gradle
 image::gradle/bg-4.png[background, size=cover]
 
 [%step]
-* Clear separation of software definition from build logic
-* Declarative configuration language
-* Raised abstraction
-* First class IDE experience
+* New *experimental* initiative
+* Working group with Google, JetBrains and Gradle.
+* First link:https://blog.gradle.org/declarative-gradle[blog post] in November 2023
+* Early link:https://github.com/gradle/declarative-gradle[prototypes] already available
+* First EAP scheduled mid-2024
 
 === Peek at current prototype
 image::gradle/bg-4.png[background, size=cover]

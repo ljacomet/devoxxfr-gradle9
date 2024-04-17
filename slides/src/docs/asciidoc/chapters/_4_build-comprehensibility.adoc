@@ -23,6 +23,8 @@ image::gradle/bg-6.png[background, size=cover]
 * Tasks produce files
 ** How do you make sure the consumer of that file `dependsOn` the producing task?
 
+// TODO two slides 1. eval ordering 2. exec ordering
+
 === Example
 image::gradle/bg-6.png[background, size=cover]
 
@@ -52,14 +54,15 @@ image::gradle/bg-6.png[background, size=cover]
 
 [%step]
 * Wire and derive values
-** Without caring about when it is set
-* Output properties used as input track task dependencies
+** Without caring about *when* it is set
 * Evaluation is done on demand
 ** Task does not run -> No inputs are computed
+* Output properties used as input track task dependencies
 
 [.small.right.top-margin]
 link:https://docs.gradle.org/current/userguide/lazy_configuration.html[docsg/lazy-configuration]
 
+// TODO two slides 1. eval ordering 2. exec ordering
 
 [%notitle]
 === Task wiring example
@@ -95,6 +98,8 @@ layout.buildDirectory = layout.projectDirectory.dir("output")
 image::gradle/bg-6.png[background, size=cover]
 
 image::provider-api.png[]
+
+// TODO split two images: functional lazy - eager
 
 === Adoption challenge
 image::gradle/bg-6.png[background, size=cover]
@@ -148,6 +153,10 @@ extension {
 }
 ----
 
+[background-color="#02303a"]
+=== Demo
+image::gradle/bg-6.png[background, size=cover]
+
 === Provider API migration
 image::gradle/bg-6.png[background, size=cover]
 
@@ -176,8 +185,8 @@ image::gradle/bg-6.png[background, size=cover]
 ----
 sourceSets {
     create("intTest") {
-        compileClasspath += sourceSets.main.get().output
-        runtimeClasspath += sourceSets.main.get().output
+        compileClasspath += sourceSets.main.map { it.output }
+        runtimeClasspath += sourceSets.main.map { it.output }
     }
 }
 

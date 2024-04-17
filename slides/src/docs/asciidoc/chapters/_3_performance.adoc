@@ -239,10 +239,12 @@ image::gradle/bg-7.png[background, size=cover]
 
 [%step]
 * On a miss, the configuration phase needs to run
-* But, with enough guarantees, it could run
+* But, with no shared mutable state between projects, it could
 [%step]
-** In parallel
-** Incrementally
+** Run in parallel
+*** following the projects hierarchy
+** Be cached incrementally
+*** task sub-graphs cached per project
 
 === More constraints
 image::gradle/bg-7.png[background, size=cover]
@@ -255,9 +257,23 @@ image::gradle/bg-7.png[background, size=cover]
 * Applying a plugin only on the root project
 --
 
-=== Current status
+=== Progressive adoption
 image::gradle/bg-7.png[background, size=cover]
 
-* Alpha experiment
+[%step]
+* Isolated Projects detects violations
+* aka. configuration-coupling between projects
+* Creating buckets of coupled projects
+* Configuring and caching them in parallel and incrementally
+
+=== Isolated Projects Status
+image::gradle/bg-7.png[background, size=cover]
+
+* Alpha experiment on top of the Configuration Cache
 * Interesting for early adopters
 * Focuses on speeding up the IDE experience first
+
+[.notes]
+****
+* We're really close to have IntelliJ and Gradle ready for early adopters
+****
