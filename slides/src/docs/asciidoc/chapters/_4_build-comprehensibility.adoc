@@ -4,6 +4,122 @@ image::gradle/bg-6.png[background, size=cover]
 
 &#x1F4A1;
 
+=== [.line-through]#Error, warning# Help messages
+image::gradle/bg-6.png[background, size=cover]
+
+[%step]
+* Builds do fail, and that's okay
+* What matters is how easy it is to
+** diagnose the problem
+** fix the problem
+
+=== Assertion error handling
+image::gradle/bg-6.png[background, size=cover]
+
+image::test-output-no-compare.png[]
+
+=== Assertion error handling: improved
+image::gradle/bg-6.png[background, size=cover]
+
+image::test-output-compare.png[]
+
+=== Variant-aware dependency resolution errors
+image::gradle/bg-6.png[background, size=cover]
+
+[source,text]
+----
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':libs:proto:extractIncludeTestProto'.
+> Could not resolve all files for configuration ':libs:proto:testCompileProtoPath'.
+   > Could not resolve io.kotest:kotest-runner-junit5-jvm:4.1.0.293-SNAPSHOT.
+     Required by:
+         project :libs:proto
+      > The consumer was configured to find a component, preferably only the resources files. However we cannot choose between the following variants of io.kotest:kotest-runner-junit5-jvm:4.1.0.293-SNAPSHOT:20200519.105809-1:
+          - jvm-api
+          - jvm-runtime
+          - metadata-api
+        All of them match the consumer attributes:
+          - Variant 'jvm-api' capability io.kotest:kotest-runner-junit5-jvm:4.1.0.293-SNAPSHOT declares a component, packaged as a jar:
+              - Unmatched attributes:
+                  - Provides integration status but the consumer didn't ask for it
+                  - Provides an API but the consumer didn't ask for it
+                  - Provides attribute 'org.jetbrains.kotlin.platform.type' with value 'jvm' but the consumer didn't ask for it
+          - Variant 'jvm-runtime' capability io.kotest:kotest-runner-junit5-jvm:4.1.0.293-SNAPSHOT declares a component, packaged as a jar:
+              - Unmatched attributes:
+                  - Provides integration status but the consumer didn't ask for it
+                  - Provides a runtime but the consumer didn't ask for it
+                  - Provides attribute 'org.jetbrains.kotlin.platform.type' with value 'jvm' but the consumer didn't ask for it
+          - Variant 'metadata-api' capability io.kotest:kotest-runner-junit5-jvm:4.1.0.293-SNAPSHOT:
+              - Unmatched attributes:
+                  - Doesn't say anything about its elements (required them preferably only the resources files)
+                  - Provides integration status but the consumer didn't ask for it
+                  - Provides a usage of 'kotlin-api' but the consumer didn't ask for it
+                  - Provides attribute 'org.jetbrains.kotlin.platform.type' with value 'common' but the consumer didn't ask for it
+----
+
+=== Specific errors for common issues
+image::gradle/bg-6.png[background, size=cover]
+
+[source,text,role=wrap]
+----
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+A problem occurred configuring root project 'example'.
+> Could not resolve all files for configuration ':classpath'.
+   > Could not resolve com.example:plugin:1.0.
+     Required by:
+         project : > com.example.greeting:com.example.greeting.gradle.plugin:1.0
+      > Plugin com.example:plugin:1.0 requires at least Gradle 8.0. This build uses Gradle 7.6.
+
+* Try:
+> Upgrade to at least Gradle 8.0. See the instructions at https://docs.gradle.org/8.7/userguide/upgrading_version_8.html#sub:updating-gradle.
+> Downgrade plugin com.example:plugin:1.0 to an older version compatible with Gradle 7.6.
+----
+
+[%step]
+* Next in 8.8: JVM version mismatch
+
+=== Better build output
+image::gradle/bg-6.png[background, size=cover]
+
+[%step]
+* Better structured
+* Actionable
+* Documented
+
+
+=== Concrete example - before
+image::gradle/bg-6.png[background, size=cover]
+
+[source,text,role=wrap]
+----
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':dependencies'.
+> Could not resolve all dependencies for configuration ':lockedConf'.
+   > Invalid lock state for lock file specified in '<project>/lock.file'. Line: <<<<<<< HEAD For more information on formatting, please refer to https://docs.gradle.org/8.5/userguide/dependency_locking.html#lock_state_location_and_format in the Gradle documentation.
+----
+
+=== Concrete example - after
+image::gradle/bg-6.png[background, size=cover]
+
+[source,text,role=wrap]
+----
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':dependencies'.
+> Could not resolve all dependencies for configuration ':lockedConf'.
+   > Invalid lock state for lock file specified in '<project>/lock.file'. Line: '<<<<<<< HEAD'
+
+* Try:
+> Verify the lockfile content. For more information on lock file format, please refer to https://docs.gradle.org/8.6/userguide/dependency_locking.html#lock_state_location_and_format in the Gradle documentation.
+----
+
 [background-color="#02303a"]
 === Laziness as a solution
 image::gradle/bg-6.png[background, size=cover]
