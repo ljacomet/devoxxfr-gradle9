@@ -12,3 +12,13 @@ dependencies {
 application {
     mainClass = "org.example.app.App"
 }
+
+tasks.consumer {
+    inputFile = tasks.producer.flatMap { it.outputFile }
+}
+
+tasks.producer {
+    outputFile = layout.buildDirectory.file("devoxx france.txt")
+}
+
+layout.buildDirectory = layout.projectDirectory.dir("output")
