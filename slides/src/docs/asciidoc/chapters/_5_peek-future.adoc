@@ -10,6 +10,11 @@ image::gradle/bg-4.png[background, size=cover]
 
 🐘
 
+[.notes]
+****
+Louis
+****
+
 === Gradle 9 objectives
 image::gradle/bg-4.png[background, size=cover]
 
@@ -64,6 +69,11 @@ image::roadmap.png[]
 image::gradle/bg-4.png[background, size=cover]
 
 🐘
+
+[.notes]
+****
+Paul
+****
 
 === Declarative Gradle
 image::gradle/bg-4.png[background, size=cover]

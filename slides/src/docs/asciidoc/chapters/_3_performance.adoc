@@ -8,6 +8,11 @@ image::gradle/bg-7.png[background, size=cover]
 === Faster compilation
 image::gradle/bg-7.png[background, size=cover]
 
+[.notes]
+****
+Louis
+****
+
 === What is compilation avoidance?
 image::gradle/bg-7.png[background, size=cover]
 
@@ -46,6 +51,11 @@ link:https://blog.gradle.org/our-approach-to-faster-compilation[blog/our-approac
 [background-color="#02303a"]
 === Gradle Configuration Cache
 image::gradle/bg-7.png[background, size=cover]
+
+[.notes]
+****
+Paul
+****
 
 === Gradle Configuration Cache
 image::gradle/bg-7.png[background, size=cover]
@@ -233,6 +243,11 @@ image::gradle/bg-7.png[background, size=cover]
 [background-color="#02303a"]
 === Isolated Projects
 image::gradle/bg-7.png[background, size=cover]
+
+[.notes]
+****
+Louis
+****
 
 === Did you say cache miss?
 image::gradle/bg-7.png[background, size=cover]

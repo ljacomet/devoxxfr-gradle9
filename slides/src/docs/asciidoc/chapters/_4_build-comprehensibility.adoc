@@ -13,6 +13,11 @@ image::gradle/bg-6.png[background, size=cover]
 ** diagnose the problem
 ** fix the problem
 
+[.notes]
+****
+Paul
+****
+
 === Assertion error handling
 image::gradle/bg-6.png[background, size=cover]
 
@@ -123,6 +128,11 @@ Execution failed for task ':dependencies'.
 [background-color="#02303a"]
 === Laziness as a solution
 image::gradle/bg-6.png[background, size=cover]
+
+[.notes]
+****
+Louis
+****
 
 === The Gradle task graph
 image::gradle/bg-6.png[background, size=cover]
@@ -296,6 +306,11 @@ image::gradle/bg-6.png[background, size=cover]
 [background-color="#02303a"]
 === Modeling
 image::gradle/bg-6.png[background, size=cover]
+
+[.notes]
+****
+Paul
+****
 
 === Raising the abstraction
 image::gradle/bg-6.png[background, size=cover]
