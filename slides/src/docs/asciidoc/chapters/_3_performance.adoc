@@ -97,6 +97,11 @@ image::gradle/bg-7.png[background, size=cover]
 
 image::config-cloud.png[]
 
+[.notes]
+****
+CONFIGURATION INPUTS
+****
+
 === What is cached?
 
 [%step]
@@ -221,6 +226,7 @@ image::gradle/bg-7.png[background, size=cover]
 * It depends on your build
 * It's not only about avoiding the configuration phase
 * All tasks will run in parallel, always
+* Configuration model memory can be freed
 * Small builds will mostly benefit from more parallelism
 * Large builds will also benefit from avoided configuration
 
@@ -239,6 +245,13 @@ image::gradle/bg-7.png[background, size=cover]
 [%step]
 * What about the work of the build engineer?
 * What about dependency upgrades and other build focused engineering tasks?
+
+[.notes]
+****
+* Invalidation
+* No Remote  Cache
+****
+
 
 [background-color="#02303a"]
 === Isolated Projects

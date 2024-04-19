@@ -349,7 +349,7 @@ testing {
     suites {
         register<JvmTestSuite>("integrationTest") {
             dependencies {
-                implementation(project())
+                implementation("junit:junit:4.13")
             }
         }
     }
