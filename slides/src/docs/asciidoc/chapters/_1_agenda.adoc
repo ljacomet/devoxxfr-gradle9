@@ -34,8 +34,7 @@ image::gradle/bg-10.png[background, size=cover]
 ** Configuration cache
 ** Isolated projects
 * Build comprehensibility
+** Build problems
 ** Laziness as a solution
 ** Modeling
 * A peek into the future
-
-
