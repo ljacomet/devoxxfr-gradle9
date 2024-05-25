@@ -10,6 +10,7 @@ Slides for https://www.devoxx.fr/schedule/[Devoxx FR 2024] presentation
 
 HTML:: link:https://jacomet.dev/devoxxfr-gradle9[jacomet.dev/devoxxfr-gradle9]
 PDF:: link:https://github.com/ljacomet/devoxxfr-gradle9/releases/download/SLIDES/20240419_devoxxfr_gradle9.pdf[20240419_devoxxfr_gradle9.pdf]
+Recording:: https://www.youtube.com/watch?v=Iuf5pq-_RXE
 
 == Abstract
 
