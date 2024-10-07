@@ -4,11 +4,11 @@ section.has-dark-background, section.has-dark-background h1, section.has-dark-ba
   color: #fff;
 }
 
-.reveal {
+.reveal:not(.overview) {
   background-image: url("../images/logo-devoxx-2024.png"), url("../images/logo-gradle-elephant.svg");
-  background-size: 90px, 80px;
+  background-size: 150px, 80px;
   background-repeat: no-repeat, no-repeat;
-  background-position: bottom 6px left 8px, bottom 20px right 28px;
+  background-position: bottom 10px left 10px, bottom 20px right 28px;
 }
 
 .reveal section img {
@@ -373,6 +373,10 @@ section.has-dark-background, section.has-dark-background h1, section.has-dark-ba
   text-align: center;
 }
 
+.reveal .slides .imageblock img {
+  border-radius: 4px;
+}
+
 .reveal .slides .center {
   text-align: center;
 }
@@ -385,6 +389,16 @@ section.has-dark-background, section.has-dark-background h1, section.has-dark-ba
 .reveal pre {
   width: 100%;
   font-size: 0.4em;
+}
+
+.reveal code {
+  font-size: 0.9em;
+}
+
+.reveal pre code {
+  border-radius: 4px;
+  padding: 8px;
+  font-size: 1em;
 }
 
 .reveal table.who-gradle {
@@ -425,6 +439,10 @@ div.product-logo-as-title img {
 
 .reveal .small {
   font-size: 0.55em;
+}
+
+.reveal .medium {
+  font-size: 0.75em;
 }
 
 .reveal div.small div.content {
@@ -474,4 +492,21 @@ div.product-logo-as-title img {
 .reveal .wrap pre {
   text-wrap: wrap;
   overflow-wrap: normal;
+}
+
+.reveal a:hover img {
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.25);
+}
+
+.reveal blockquote {
+  padding: 16px;
+  border-radius: 4px;
+}
+
+blockquote div.paragraph:first-child p {
+  margin-top: 0;
+}
+
+blockquote div.paragraph:last-child p {
+  margin-bottom: 0;
 }
