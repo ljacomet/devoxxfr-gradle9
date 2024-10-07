@@ -58,22 +58,20 @@ b.conum *{color:inherit!important}
 link.rel = 'stylesheet';
 link.type = 'text/css';
 link.href = window.location.search.match( /print-pdf/gi ) ? "reveal.js/css/print/pdf.css" : "reveal.js/css/print/paper.css";
-document.getElementsByTagName( 'head' )[0].appendChild( link );</script><!--[if lt IE 9]><script src="reveal.js/lib/js/html5shiv.js"></script><![endif]--><link rel="stylesheet" type="text/css" href="style/gradle.css"/></head><body><div class="reveal"><div class="slides"><section class="title" data-state="title" data-background-size="cover" data-background-image="./images/gradle/intro.png" data-background-color="#02303a"><h1>The road to Gradle 9</h1><div class="preamble"><div class="paragraph title right"><p>Alex Semin<br>
-Louis Jacomet<br>
-Devoxx Belgium 2024</p></div></div></section>
-<section><section id="slide_what_are_we_talking_about_today" data-background-color="#02303a" data-background-image="./images/gradle/bg-8.png" data-background-size="cover"><h2>What are we talking about today?</h2><div class="paragraph"><p>&#x1F4CB;</p></div></section><section id="slide_build_tools" data-background-image="./images/gradle/bg-10.png" data-background-size="cover"><h2>Build tools?</h2>
-<div class="ulist"><ul><li class="fragment"><p>Who uses Gradle?</p></li><li class="fragment"><p>Who uses Maven?</p></li><li class="fragment"><p>Who uses both?</p></li><li class="fragment"><p>Who uses neither?</p></li><li class="fragment"><p>Who is happy to use a build tool?</p></li></ul></div></section><section id="slide_build_logic" data-background-image="./images/gradle/bg-10.png" data-background-size="cover"><h2>Build logic</h2>
-<div class="paragraph"><p>How often do you touch it?</p></div>
-<div class="ulist"><ul><li class="fragment"><p>Almost every day?</p></li><li class="fragment"><p>Almost every week?</p></li><li class="fragment"><p>Just once a month?</p></li></ul></div>
-<aside class="notes"><div class="ulist"><ul><li><p>Maybe joke about the rest having a perfect setup</p></li><li><p>Maybe joke about the first people needing to chat the last</p><div class="ulist"><ul><li><p>Maybe it&#8217;s fine to make changes often, maybe changes are made rarely because it&#8217;s hard</p></li></ul></div></li></ul></div></aside></section><section id="slide_agenda" data-background-image="./images/gradle/bg-10.png" data-background-size="cover"><h2>Agenda</h2>
-<div class="ulist"><ul><li><p>Core evolutions</p></li><li><p>Build comprehensibility</p><div class="ulist"><ul><li><p>Errors, warnings</p></li><li><p>Provider API and laziness</p></li></ul></div></li><li><p>Build scalability</p><div class="ulist"><ul><li><p>Guiding principles</p></li><li><p>Configuration cache</p></li></ul></div></li><li><p>A peek into the future</p></li></ul></div></section></section>
-<section><section id="slide_who_are_we" data-background-color="#02303a" data-background-image="./images/gradle/bg-1.png" data-background-size="cover"><h2>Who are we?</h2><div class="paragraph"><p>&#x1F9D1;&#x200D;&#x1F4BB; &#x1F9D1;&#x200D;&#x1F4BB;</p></div><aside class="notes"><div class="paragraph"><p>Alex</p></div></aside></section><section id="slide_gradle" data-background-image="./images/gradle/bg-1.png" data-background-size="cover">
+document.getElementsByTagName( 'head' )[0].appendChild( link );</script><!--[if lt IE 9]><script src="reveal.js/lib/js/html5shiv.js"></script><![endif]--><link rel="stylesheet" type="text/css" href="style/gradle.css"/></head><body><div class="reveal"><div class="slides"><section class="title" data-state="title" data-background-size="cover" data-background-image="./images/gradle/intro.png" data-background-color="#02303a"><h1>The road to Gradle 9</h1><div class="preamble"><div class="paragraph title right"><p>Louis Jacomet<br>
+Paul Merlin<br>
+Devoxx France 2024</p></div></div></section>
+<section><section id="slide_what_are_we_talking_about_today" data-background-color="#02303a" data-background-image="./images/gradle/bg-8.png" data-background-size="cover"><h2>What are we talking about today?</h2><div class="paragraph"><p>&#x1F4CB;</p></div></section><section id="slide_a_few_build_questions" data-background-image="./images/gradle/bg-10.png" data-background-size="cover"><h2>A few build questions &#8230;&#8203;</h2>
+<div class="ulist"><ul><li class="fragment"><p>Who has a long build?</p><div class="ulist"><ul><li class="fragment"><p>1 hour and more?</p></li><li class="fragment"><p>30 minutes and more?</p></li><li class="fragment"><p>5 minutes and more?</p></li><li class="fragment"><p>less than a minute?</p></li></ul></div></li><li class="fragment"><p>Who has a complex build setup?</p></li><li class="fragment"><p>Who is happy to use a build tool?</p></li></ul></div></section><section id="slide_and_which_build_tool" data-background-image="./images/gradle/bg-10.png" data-background-size="cover"><h2>And which build tool?</h2>
+<div class="ulist"><ul><li class="fragment"><p>Who uses Gradle?</p></li><li class="fragment"><p>Who uses Maven?</p></li><li class="fragment"><p>Who uses both?</p></li><li class="fragment"><p>Who uses neither?</p></li></ul></div></section><section id="slide_agenda" data-background-image="./images/gradle/bg-10.png" data-background-size="cover"><h2>Agenda</h2>
+<div class="ulist"><ul><li><p>Performance as a feature</p><div class="ulist"><ul><li><p>Faster compilation</p></li><li><p>Configuration cache</p></li><li><p>Isolated projects</p></li></ul></div></li><li><p>Build comprehensibility</p><div class="ulist"><ul><li><p>Build problems</p></li><li><p>Laziness as a solution</p></li><li><p>Modeling</p></li></ul></div></li><li><p>A peek into the future</p></li></ul></div></section></section>
+<section><section id="slide_who_are_we" data-background-color="#02303a" data-background-image="./images/gradle/bg-1.png" data-background-size="cover"><h2>Who are we?</h2><div class="paragraph"><p>&#x1F9D1;&#x200D;&#x1F4BB; &#x1F9D1;&#x200D;&#x1F4BB;</p></div></section><section id="slide_gradle" data-background-image="./images/gradle/bg-1.png" data-background-size="cover">
 <table class="tableblock frame-none grid-none who-gradle" style="width:100%"><colgroup><col style="width:33.3333%"><col style="width:33.3333%"><col style="width:33.3334%"></colgroup><tbody><tr><td class="tableblock halign-center valign-middle"><div><div class="imageblock" style=""><img src="./images/logo-gradleware.svg" alt="logo gradleware"></div></div></td><td class="tableblock halign-center valign-middle"><div><div class="imageblock" style=""><img src="./images/logo-gradle-old.svg" alt="logo gradle old"></div></div></td><td class="tableblock halign-center valign-middle"><div><div class="imageblock" style=""><img src="./images/logo-gradle-elephant-old.png" alt="logo gradle elephant old"></div></div></td></tr></table>
 <div class="paragraph"><p>Since 2008, our mission is to improve developer productivity.</p></div>
 <table class="tableblock frame-none grid-none who-gradle" style="width:100%"><colgroup><col style="width:33.3333%"><col style="width:33.3333%"><col style="width:33.3334%"></colgroup><tbody><tr><td class="tableblock halign-center valign-middle"><div><div class="imageblock" style=""><img src="./images/logo-gradle-elephant-geometrics.svg" alt="logo gradle elephant geometrics"></div></div></td><td class="tableblock halign-center valign-middle"><div><div class="imageblock" style=""><img src="./images/logo-gradle-elephant.svg" alt="logo gradle elephant"></div></div></td><td class="tableblock halign-center valign-middle"><div><div class="imageblock" style=""><img src="./images/logo-gradle-elephant-outline.svg" alt="logo gradle elephant outline"></div></div></td></tr></table></section><section id="slide_gradle_build_tool" data-background-image="./images/gradle/bg-1.png" data-background-size="cover">
 <div class="imageblock product-logo-as-title" style=""><img src="./images/logo-gradle-build-tool.svg" alt="logo gradle build tool"></div>
-<div class="paragraph"><p>Open-source build tool under <a href="https://github.com/gradle/gradle/blob/master/LICENSE">Apache</a> license</p></div>
-<div class="ulist"><ul><li><p>Official build tool for Android</p></li><li><p>Default with Spring Initializr</p></li><li><p>Over 45 million monthly downloads</p></li></ul></div></section><section id="slide_develocity" data-background-image="./images/gradle/bg-1.png" data-background-size="cover">
+<div class="paragraph"><p>Software build tool under <a href="https://github.com/gradle/gradle/blob/master/LICENSE">Apache</a> license.</p></div>
+<div class="paragraph"><p>Top 20 in popular open source projects according to <a href="https://techcrunch.com/2017/04/07/tracking-the-explosive-growth-of-open-source-software/">TechCrunch</a> with over 40 millions monthly downloads.</p></div></section><section id="slide_develocity" data-background-image="./images/gradle/bg-1.png" data-background-size="cover">
 <div class="imageblock product-logo-as-title" style=""><img src="./images/gradle-develocity.svg" alt="gradle develocity"></div>
 <div class="paragraph"><p>Develocity, commercial solution, is the first integrated platform for Developer Productivity Engineering (DPE)</p></div>
 <div class="imageblock" style=""><img src="./images/build-scan-topology.png" alt="build scan topology" width="70%"></div>
@@ -88,38 +86,78 @@ acceleration: build-cache, test distribution, predictive test selection &#8230;&
 <div class="paragraph"><p>Two formulas
 * showdown: game show, 4 participants
 * lowdown: interview</p></div>
-<div class="paragraph"><p>Showcases how Netflix, Microsoft, LinkedIn and others do DPE</p></div></aside></section><section id="slide_build_scans" data-background-image="./images/gradle/bg-1.png" data-background-size="cover">
-<div class="paragraph center"><p>Build Scan™</p></div>
-<div class="imageblock" style=""><a class="image" href="https://ge.gradle.org/s/jxbuuanjyz5ei"><img src="./images/buildscan-2024-10.png" alt="buildscan 2024 10" width="80%"></a></div>
-<div class="paragraph right"><p><span class="image"><a class="image" href="https://ge.gradle.org/s/jxbuuanjyz5ei"><img src="./images/build-scan-link.svg" alt="build scan link"></a></span></p></div>
-<aside class="notes"><div class="ulist"><ul><li><p>Permanent record of everything that happens in a build</p></li><li><p>We will use build scans in this presentation to illustrate some topics</p></li></ul></div></aside></section></section>
-<section><section id="slide_core_evolutions" data-background-color="#02303a" data-background-image="./images/gradle/bg-1.png" data-background-size="cover"><h2>Core evolutions</h2></section><section id="slide_gradle_release_timeline" data-background-image="./images/gradle/bg-1.png" data-background-size="cover"><h2>Gradle release timeline</h2>
-<div class="ulist"><ul><li><p>2023 H1: 8.0&#8201;&#8212;&#8201;8.2</p></li><li><p>2023 H2: 8.3&#8201;&#8212;&#8201;8.5</p></li><li><p>2024 H1: 8.6&#8201;&#8212;&#8201;8.9</p></li><li><p>2024 H2: 8.10&#8201;&#8212;&#8201;8.12*</p></li><li><p>2025 H1: 8.13*&#8201;&#8212;&#8201;9.0*</p></li></ul></div>
-<div class="paragraph medium right top-margin"><p>*current plans</p></div>
-<aside class="notes"><div class="ulist"><ul><li><p>Releasing on average 6 minor releases per year with a steady schedule</p></li><li><p>Minor does not mean small, minor means remaining fully backward compatible</p><div class="ulist"><ul><li><p>while shipping new features and improvements</p></li></ul></div></li><li><p>Historically, have been releasing majors around every 2 years</p><div class="ulist"><ul><li><p>This is the engine of Gradle evolution: shed old weight, update defaults</p></li></ul></div></li></ul></div></aside></section><section id="slide_what_comes_with_9_0_evolution" data-background-color="#02303a" data-background-image="./images/gradle/bg-1.png" data-background-size="cover"><h2>What comes with 9.0 evolution?</h2></section><section id="slide_raising_the_minimum_java_version" data-background-image="./images/gradle/bg-1.png" data-background-size="cover"><h2>Raising the minimum Java version</h2>
-<div class="ulist"><ul><li class="fragment"><p>Require Java 17 and above for running Gradle</p></li><li class="fragment"><p>Require Java 8 and above for compiling, tests and executing user code</p><div class="ulist"><ul><li><p>For workers in general</p></li></ul></div></li></ul></div>
-<aside class="notes"><div class="ulist"><ul><li><p>Java 17: performance, memory, &#8230;&#8203;</p></li><li><p>Plugin authors: Use 17 does not impose on their users</p></li></ul></div></aside></section><section id="slide_kotlin_dsl" data-background-image="./images/gradle/bg-1.png" data-background-size="cover"><h2>Kotlin DSL</h2>
-<div class="ulist"><ul><li class="fragment"><p>Adopt Kotlin 2.0 language level</p></li><li class="fragment"><p>Enables leveraging Kotlin 2.0 features in build logic (plugins and scripts)</p></li><li class="fragment"><p>And what about K2 compiler?</p></li></ul></div>
-<aside class="notes"><div class="ulist"><ul><li><p>K2: benefits on large source sets</p></li><li><p>Gradle compiles buildscripts 1 by 1, limited impact</p></li><li><p>The impact might be visible for plugins authored in Kotlin</p></li></ul></div></aside></section><section id="slide_groovy_dsl" data-background-image="./images/gradle/bg-1.png" data-background-size="cover"><h2>Groovy DSL</h2>
-<div class="ulist"><ul><li class="fragment"><p>Adopt Groovy 4.x</p></li><li class="fragment"><p>Language changes might impact build scripts</p></li></ul></div></section><section id="slide_general_update_of_dependencies" data-background-image="./images/gradle/bg-1.png" data-background-size="cover"><h2>General update of dependencies</h2>
-<div class="ulist"><ul><li class="fragment"><p>Internal Gradle dependencies updates</p></li><li class="fragment"><p>Plugins and tools defaults</p><div class="ulist"><ul><li class="fragment"><p>Code quality: Checkstyle, PMD, &#8230;&#8203;</p></li><li class="fragment"><p>Zinc for Scala compilation</p></li></ul></div></li></ul></div></section><section id="slide_bug_fixes" data-background-image="./images/gradle/bg-1.png" data-background-size="cover"><h2>Bug fixes</h2>
-<div class="paragraph"><p>Many &#8230;&#8203;</p></div>
-<aside class="notes"><div class="paragraph"><p>Includes fixing bugs that can be considered breaking changes</p></div></aside></section><section id="slide_smooth_upgrade_path" data-background-image="./images/gradle/bg-1.png" data-background-size="cover"><h2>Smooth upgrade path</h2>
-<div class="ulist"><ul><li class="fragment"><p>Upgrade to the latest Gradle 8.x</p></li><li class="fragment"><p>Fix deprecations</p><div class="ulist"><ul><li><p>Use <a href="https://docs.gradle.org/current/userguide/upgrading_version_8.html">Upgrade Guide</a> for more details</p></li></ul></div></li><li class="fragment"><p>Opt-in into features becoming a default</p><div class="ulist"><ul><li><p>Configuration cache is a major one</p></li></ul></div></li><li class="fragment"><p>Finally, upgrade to Gradle 9.0</p></li></ul></div>
-<aside class="notes"><div class="ulist"><ul><li><p>Deal with one issue at a time</p></li><li><p>Enable features that will become a default (e.g. CC)</p></li></ul></div></aside></section><section id="slide_gradle_9_themes" data-background-image="./images/gradle/bg-1.png" data-background-size="cover"><h2>Gradle 9 themes</h2>
-<div class="ulist"><ul><li><p>Build comprehensibility</p></li><li><p>Build scalability</p></li></ul></div></section></section>
-<section><section id="slide_build_comprehensibility" data-background-color="#02303a" data-background-image="./images/gradle/bg-6.png" data-background-size="cover"><h2>Build comprehensibility</h2><div class="paragraph"><p>&#x1F4A1;</p></div></section><section id="slide_build_complexity" data-background-image="./images/gradle/bg-10.png" data-background-size="cover"><h2>Build complexity</h2>
-<div class="ulist"><ul><li><p>Who has a complex build setup?</p></li></ul></div></section><section id="slide_gradle_vision" data-background-image="./images/gradle/bg-6.png" data-background-size="cover"><h2>Gradle vision</h2>
-<div class="quoteblock center"><blockquote><div class="paragraph"><p>Gradle Build Tool is an open-source build system
-that automates the process of building software of
-any type, size, or complexity in a fast and reliable manner</p></div></blockquote></div></section><section id="slide_gradle_vision_comprehensibility" data-background-image="./images/gradle/bg-6.png" data-background-size="cover"><h2>Gradle vision: comprehensibility</h2>
-<div class="quoteblock center"><blockquote><div class="paragraph"><p>Gradle Build Tool is an open-source build system
-that automates the process of <strong>building software of
-any type</strong>, size, or <strong>complexity</strong> in a fast and <strong>reliable manner</strong></p></div></blockquote></div></section><section id="slide_errors_warnings" data-background-image="./images/gradle/bg-6.png" data-background-size="cover"><h2>Errors, warnings</h2></section><section id="slide_errors_warnings_help_messages" data-background-image="./images/gradle/bg-6.png" data-background-size="cover"><h2><span class="line-through">Errors, warnings</span> Help messages</h2>
+<div class="paragraph"><p>Showcases how Netflix, Microsoft, LinkedIn and others do DPE</p></div></aside></section><section id="slide_build_scans" data-background-image="./images/gradle/bg-1.png" data-background-size="cover"><h2>Build Scans</h2>
+<div class="paragraph"><p>Permanent record<br>
+of everything that happens in a build.</p></div>
+<div class="imageblock" style=""><img src="./images/buildscan-example.png" alt="buildscan example"></div>
+<div class="paragraph"><p><span class="image"><a class="image" href="https://scans.gradle.com/s/rcqiowuogd2xu"><img src="./images/build-scan-link.svg" alt="build scan link"></a></span></p></div>
+<aside class="notes"><div class="paragraph"><p>We will use build scans in this presentation to illustrate some topics</p></div></aside></section></section>
+<section><section id="slide_performance_as_a_feature" data-background-color="#02303a" data-background-image="./images/gradle/bg-7.png" data-background-size="cover"><h2>Performance as a feature</h2><div class="paragraph"><p>&#x1F680;</p></div></section><section id="slide_faster_compilation" data-background-color="#02303a" data-background-image="./images/gradle/bg-7.png" data-background-size="cover"><h2>Faster compilation</h2>
+<aside class="notes"><div class="paragraph"><p>Louis</p></div></aside></section><section id="slide_what_is_compilation_avoidance" data-background-image="./images/gradle/bg-7.png" data-background-size="cover"><h2>What is compilation avoidance?</h2>
+<div class="imageblock" style=""><img src="./images/myapp-recompile-diff.png" alt="myapp recompile diff"></div></section><section id="slide_compilation_avoidance_in_practice" data-background-image="./images/gradle/bg-7.png" data-background-size="cover"><h2>Compilation avoidance in practice</h2>
+<div class="ulist"><ul><li><p>Since Gradle 3.4 (Feb 2017)</p></li><li><p>No recompilation between projects if ABI did not change</p></li><li><p>Smaller compilation classpath thanks to <code>api</code>/<code>implementation</code> separation</p></li></ul></div></section><section id="slide_can_it_go_faster" data-background-image="./images/gradle/bg-7.png" data-background-size="cover"><h2>Can it go faster?</h2>
+<div class="imageblock" style=""><img src="./images/compiler-daemons.png" alt="compiler daemons"></div>
+<div class="paragraph small right top-margin"><small><a href="https://blog.gradle.org/our-approach-to-faster-compilation">blog/our-approach-to-faster-compilation</a></small></div></section><section id="slide_compiler_daemons" data-background-image="./images/gradle/bg-7.png" data-background-size="cover"><h2>Compiler daemons</h2>
+<div class="ulist"><ul><li><p>Reuse the Java compiler process across tasks and builds</p></li><li><p>Active by default since Gradle 8.4</p></li><li><p>Kotlin and Scala have their own support for this</p></li></ul></div></section><section id="slide_whats_up_with_8_0_vs_8_1" data-background-image="./images/gradle/bg-7.png" data-background-size="cover"><h2>What&#8217;s up with 8.0 vs 8.1?</h2>
+<div class="imageblock" style=""><img src="./images/compiler-daemons.png" alt="compiler daemons"></div>
+<div class="paragraph small right top-margin"><small><a href="https://blog.gradle.org/our-approach-to-faster-compilation">blog/our-approach-to-faster-compilation</a></small></div></section><section id="slide_gradle_configuration_cache" data-background-color="#02303a" data-background-image="./images/gradle/bg-7.png" data-background-size="cover"><h2>Gradle Configuration Cache</h2>
+<aside class="notes"><div class="paragraph"><p>Paul</p></div></aside></section><section id="slide_gradle_configuration_cache_2" data-background-image="./images/gradle/bg-7.png" data-background-size="cover"><h2>Gradle Configuration Cache</h2>
+<div class="ulist"><ul><li><p>The Configuration Cache is</p><div class="ulist"><ul><li class="fragment"><p>a feature that significantly improves build performance</p></li><li class="fragment"><p>by caching the result of the configuration phase</p></li><li class="fragment"><p>and reusing this for subsequent builds.</p></li></ul></div></li></ul></div></section><section id="slide_gradle_configuration_cache_3" data-background-image="./images/gradle/bg-7.png" data-background-size="cover"><h2>Gradle Configuration Cache</h2>
+<div class="ulist"><ul><li><p>Enable it Today, it is <strong>stable</strong> since Gradle 8.1!</p><div class="ulist"><ul><li class="fragment"><p><code>--configuration-cache</code> on the command line</p></li><li class="fragment"><p><code>org.gradle.configuration-cache=true</code><br>
+in your <code>gradle.properties</code></p></li></ul></div></li></ul></div></section><section id="slide_gradle_build_anatomy" data-background-image="./images/gradle/bg-7.png" data-background-size="cover"><h2>Gradle build anatomy</h2>
+<div class="imageblock" style=""><img src="./images/gradle-build-anatomy.png" alt="gradle build anatomy"></div>
+<div class="paragraph small right top-margin"><small><strong>Bars not to scale</strong></small></div></section><section id="slide_configuration_phase" data-background-image="./images/gradle/bg-7.png" data-background-size="cover"><h2>Configuration phase</h2>
+<div class="ulist"><ul><li><p>Apply plugins</p></li><li><p>Execute build logic</p></li><li><p>Compute task graph</p><div class="ulist"><ul><li><p>Selecting and configuring <em>requested</em> tasks</p></li><li><p>and their <em>dependencies</em></p></li></ul></div></li></ul></div></section><section id="slide_caching_build_configuration" data-background-image="./images/gradle/bg-7.png" data-background-size="cover"><h2>Caching build configuration</h2>
+<div class="imageblock" style=""><img src="./images/config-cloud.png" alt="config cloud"></div>
+<aside class="notes"><div class="paragraph"><p>CONFIGURATION INPUTS</p></div></aside></section><section id="slide_what_is_cached"><h2>What is cached?</h2><div class="ulist"><ul><li class="fragment"><p>Task graph</p></li><li class="fragment"><p>Task inputs</p></li><li class="fragment"><p>All the rest is discarded</p><div class="ulist"><ul><li><p>No <code>project</code> state anymore</p></li></ul></div></li></ul></div></section><section id="slide_requirements" data-background-image="./images/gradle/bg-7.png" data-background-size="cover"><h2>Requirements</h2>
+<div class="ulist"><ul><li><p>No live JVM types</p><div class="ulist"><ul><li><p>Classloaders, I/O streams, threads, etc.</p></li></ul></div></li><li><p>No Gradle model types</p><div class="ulist"><ul><li><p>Including dependency management types</p></li></ul></div></li></ul></div>
+<div class="paragraph small right top-margin"><small><a href="https://docs.gradle.org/current/userguide/configuration_cache.html#config_cache:requirements">docs/configuration-cache-requirements</a></small></div></section><section id="slide_example_of_invalid_input" data-background-image="./images/gradle/bg-7.png" data-background-size="cover"><h2>Example of invalid input</h2>
+<div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-kotlin hljs" data-noescape="true" data-lang="kotlin">abstract class SomeTask : DefaultTask() {
+
+    @get:Input lateinit var sourceSet: SourceSet
+
+    @TaskAction
+    fun action() {
+        val classpathFiles = sourceSet.compileClasspath.files
+        // ...
+    }
+}</code></pre></div></div>
+<div class="paragraph"><p>needs to become</p></div>
+<div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-kotlin hljs" data-noescape="true" data-lang="kotlin">abstract class SomeTask : DefaultTask() {
+
+    @get:InputFiles @get:Classpath
+    abstract val classpath: ConfigurableFileCollection
+
+    @TaskAction
+    fun action() {
+        val classpathFiles = classpath.files
+        // ...
+    }
+}</code></pre></div></div>
+<div class="paragraph"><p>configured with</p></div>
+<div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-kotlin hljs" data-noescape="true" data-lang="kotlin">classpath.from(sourceSet.compileClasspath)</code></pre></div></div></section><section id="slide_why_does_it_matter" data-background-image="./images/gradle/bg-7.png" data-background-size="cover"><h2>Why does it matter?</h2>
+<div class="ulist"><ul><li class="fragment"><p>Configuration time goes down to almost zero</p></li><li class="fragment"><p>Valid configuration cache gives stronger guarantees for task isolation</p></li><li class="fragment"><p>Which allows Gradle tasks to run</p><div class="ulist"><ul><li class="fragment"><p>sooner</p></li><li class="fragment"><p>in parallel</p></li><li class="fragment"><p>including inside a single project</p></li></ul></div></li></ul></div></section><section id="slide_demo" data-background-color="#02303a" data-background-image="./images/gradle/bg-7.png" data-background-size="cover"><h2>Demo</h2></section><section id="slide_can_i_use_it_on_my_build" data-background-image="./images/gradle/bg-7.png" data-background-size="cover"><h2>Can I use it on my build?</h2>
+<div class="ulist"><ul><li class="fragment"><p>It depends on your build</p></li><li class="fragment"><p>Most plugins out there are already compatible</p></li><li class="fragment"><p>You can selectively declare incompatible tasks<br>
+<span class="small"><code>tasks.some { notCompatibleWithConfigurationCache("because") }</code></span></p></li><li class="fragment"><p>You may have to refactor custom build-logic</p></li><li class="fragment"><p>This is about applying best practices anyway</p></li></ul></div>
+<aside class="notes"><div class="ulist"><ul><li><p>The amount of required work will heavily depend on the 3rd party plugins you use and the amount of custom build logic you have.</p></li></ul></div></aside></section><section id="slide_configuration_cache_report" data-background-image="./images/gradle/bg-7.png" data-background-size="cover"><h2>Configuration Cache Report</h2>
+<div class="ulist"><ul><li class="fragment"><p>Useful to understand CC inputs</p></li><li class="fragment"><p>Built-in</p></li><li class="fragment"><p><span class="image"><img src="./images/cc-report-inputs.png" alt="cc report inputs" width="80%"></span></p></li></ul></div></section><section id="slide_configuration_cache_report_2" data-background-image="./images/gradle/bg-7.png" data-background-size="cover"><h2>Configuration Cache Report</h2>
+<div class="ulist"><ul><li class="fragment"><p>Useful to understand CC problems</p></li><li class="fragment"><p>Got much nicer in Gradle 8.7 with filtered exceptions</p></li><li class="fragment"><p><span class="image"><img src="./images/cc-report-problems.png" alt="cc report problems"></span></p></li></ul></div></section><section id="slide_space_usage_analysis" data-background-image="./images/gradle/bg-7.png" data-background-size="cover"><h2>Space Usage Analysis</h2>
+<div class="ulist"><ul><li class="fragment"><p>Useful if your cached state is too big</p></li><li class="fragment"><p>External tool <a href="https://github.com/gradle/gcc2speedscope">gradle/gcc2speedscope</a></p></li><li class="fragment"><p>Helps identify "task state leaks"</p></li><li class="fragment"><p><span class="image"><img src="./images/gcc2speedscope.png" alt="gcc2speedscope" width="80%"></span></p></li></ul></div></section><section id="slide_what_performance_benefits" data-background-image="./images/gradle/bg-7.png" data-background-size="cover"><h2>What performance benefits?</h2>
+<div class="ulist"><ul><li class="fragment"><p>It depends on your build</p></li><li class="fragment"><p>It&#8217;s not only about avoiding the configuration phase</p></li><li class="fragment"><p>All tasks will run in parallel, always</p></li><li class="fragment"><p>Configuration model memory can be freed</p></li><li class="fragment"><p>Small builds will mostly benefit from more parallelism</p></li><li class="fragment"><p>Large builds will also benefit from avoided configuration</p></li></ul></div></section><section id="slide_what_performance_benefits_2" data-background-image="./images/gradle/bg-7.png" data-background-size="cover"><h2>What performance benefits?</h2>
+<div class="ulist"><ul><li class="fragment"><p>For example: Square, on a <strong>large</strong> Android build</p></li><li class="fragment"><p>Early adopters - <a href="https://developer.squareup.com/blog/5-400-hours-a-year-saving-developers-time-and-sanity-with-gradles/">Blog Post</a> - December 2022</p></li><li class="fragment"><p><em>Saving 5,400 hours a year with Gradle&#8217;s Configuration Cache</em></p></li><li class="fragment"><p><em>Recovering an estimated $1.1 million in lost productivity annually</em></p></li></ul></div></section><section id="slide_limitations" data-background-image="./images/gradle/bg-7.png" data-background-size="cover"><h2>Limitations</h2>
+<div class="ulist"><ul><li class="fragment"><p>What about the work of the build engineer?</p></li><li class="fragment"><p>What about dependency upgrades and other build focused engineering tasks?</p></li></ul></div>
+<aside class="notes"><div class="ulist"><ul><li><p>Invalidation</p></li><li><p>No Remote  Cache</p></li></ul></div></aside></section><section id="slide_isolated_projects" data-background-color="#02303a" data-background-image="./images/gradle/bg-7.png" data-background-size="cover"><h2>Isolated Projects</h2>
+<aside class="notes"><div class="paragraph"><p>Louis</p></div></aside></section><section id="slide_did_you_say_cache_miss" data-background-image="./images/gradle/bg-7.png" data-background-size="cover"><h2>Did you say cache miss?</h2>
+<div class="ulist"><ul><li class="fragment"><p>On a miss, the configuration phase needs to run</p></li><li class="fragment"><p>But, with no shared mutable state between projects, it could</p><div class="ulist"><ul><li class="fragment"><p>Run in parallel</p><div class="ulist"><ul><li><p>following the projects hierarchy</p></li></ul></div></li><li class="fragment"><p>Be cached incrementally</p><div class="ulist"><ul><li><p>task sub-graphs cached per project</p></li></ul></div></li></ul></div></li></ul></div></section><section id="slide_more_constraints" data-background-image="./images/gradle/bg-7.png" data-background-size="cover"><h2>More constraints</h2>
+<div class="ulist"><ul><li><p>No <em>mutable</em> cross project access during configuration</p><div class="ulist"><ul><li><p>Example: No <code>allprojects</code> or <code>subprojects</code> that <em>mutates</em> project configuration</p></li></ul></div></li></ul></div>
+<aside class="notes"><div class="ulist"><ul><li><p>Applying a plugin only on the root project</p></li></ul></div></aside></section><section id="slide_progressive_adoption" data-background-image="./images/gradle/bg-7.png" data-background-size="cover"><h2>Progressive adoption</h2>
+<div class="ulist"><ul><li class="fragment"><p>Isolated Projects detects violations</p></li><li class="fragment"><p>aka. configuration-coupling between projects</p></li><li class="fragment"><p>Creating buckets of coupled projects</p></li><li class="fragment"><p>Configuring and caching them in parallel and incrementally</p></li></ul></div></section><section id="slide_isolated_projects_status" data-background-image="./images/gradle/bg-7.png" data-background-size="cover"><h2>Isolated Projects Status</h2>
+<div class="ulist"><ul><li><p>Alpha experiment on top of the Configuration Cache</p></li><li><p>Interesting for early adopters</p></li><li><p>Focuses on speeding up the IDE experience first</p></li></ul></div>
+<aside class="notes"><div class="ulist"><ul><li><p>We&#8217;re really close to have IntelliJ and Gradle ready for early adopters</p></li></ul></div></aside></section></section>
+<section><section id="slide_build_comprehensibility" data-background-color="#02303a" data-background-image="./images/gradle/bg-6.png" data-background-size="cover"><h2>Build comprehensibility</h2><div class="paragraph"><p>&#x1F4A1;</p></div></section><section id="slide_error_warning_help_messages" data-background-image="./images/gradle/bg-6.png" data-background-size="cover"><h2><span class="line-through">Error, warning</span> Help messages</h2>
 <div class="ulist"><ul><li class="fragment"><p>Builds do fail, and that&#8217;s okay</p></li><li class="fragment"><p>What matters is how easy it is to</p><div class="ulist"><ul><li><p>diagnose the problem</p></li><li><p>fix the problem</p></li></ul></div></li></ul></div>
-<aside class="notes"><div class="paragraph"><p>Alex</p></div></aside></section><section id="slide_assertion_error_handling" data-background-image="./images/gradle/bg-6.png" data-background-size="cover"><h2>Assertion error handling</h2>
+<aside class="notes"><div class="paragraph"><p>Paul</p></div></aside></section><section id="slide_assertion_error_handling" data-background-image="./images/gradle/bg-6.png" data-background-size="cover"><h2>Assertion error handling</h2>
 <div class="imageblock" style=""><img src="./images/test-output-no-compare.png" alt="test output no compare"></div></section><section id="slide_assertion_error_handling_improved" data-background-image="./images/gradle/bg-6.png" data-background-size="cover"><h2>Assertion error handling: improved</h2>
-<aside class="notes"><div class="paragraph"><p>Since Gradle 8.5</p></div></aside>
 <div class="imageblock" style=""><img src="./images/test-output-compare.png" alt="test output compare"></div></section><section id="slide_variant_aware_dependency_resolution_errors" data-background-image="./images/gradle/bg-6.png" data-background-size="cover"><h2>Variant-aware dependency resolution errors</h2>
 <div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-text hljs" data-noescape="true" data-lang="text">FAILURE: Build failed with an exception.
 
@@ -150,58 +188,20 @@ Execution failed for task ':libs:proto:extractIncludeTestProto'.
                   - Provides integration status but the consumer didn't ask for it
                   - Provides a usage of 'kotlin-api' but the consumer didn't ask for it
                   - Provides attribute 'org.jetbrains.kotlin.platform.type' with value 'common' but the consumer didn't ask for it</code></pre></div></div></section><section id="slide_specific_errors_for_common_issues" data-background-image="./images/gradle/bg-6.png" data-background-size="cover"><h2>Specific errors for common issues</h2>
-<div class="paragraph medium"><p>JVM version mismatch for a dependency (since Gradle 8.8)</p></div>
 <div class="listingblock wrap"><div class="content"><pre class="highlightjs highlight"><code class="language-text hljs" data-noescape="true" data-lang="text">FAILURE: Build failed with an exception.
 
 * What went wrong:
 A problem occurred configuring root project 'example'.
-> Could not determine the dependencies of task ':consumer:compileJava'.
- > Could not resolve all task dependencies for configuration ':consumer:compileClasspath'.
-    > Could not resolve project :producer.
-      Required by:
-          project :consumer
-       <strong>> project :producer requires at least a Java 18 JVM. This build uses a Java 17 JVM.</strong>
-
-* Try:
-> Run this build using a Java 18 JVM (or newer).
-> Change the dependency on 'project :producer' to an earlier version that supports JVM runtime version 17.</code></pre></div></div></section><section id="slide_specific_errors_for_common_issues_2" data-background-image="./images/gradle/bg-6.png" data-background-size="cover"><h2>Specific errors for common issues</h2>
-<div class="paragraph medium"><p>Gradle version mismatch for a plugin (since Gradle 8.7)</p></div>
-<div class="listingblock wrap"><div class="content"><pre class="highlightjs highlight"><code class="language-text hljs" data-noescape="true" data-lang="text">FAILURE: Build failed with an exception.
-
-* What went wrong:
-A problem occurred configuring root project 'example'.
-> Could not resolve all files for configuration ':classpath'.
-   > Could not resolve com.example:plugin:1.0.
+&gt; Could not resolve all files for configuration ':classpath'.
+   &gt; Could not resolve com.example:plugin:1.0.
      Required by:
-         project : > com.example.greeting:com.example.greeting.gradle.plugin:1.0
-      <strong>> Plugin com.example:plugin:1.0 requires at least Gradle 8.0. This build uses Gradle 7.6.</strong>
+         project : &gt; com.example.greeting:com.example.greeting.gradle.plugin:1.0
+      &gt; Plugin com.example:plugin:1.0 requires at least Gradle 8.0. This build uses Gradle 7.6.
 
 * Try:
-> Upgrade to at least Gradle 8.0. See the instructions at https://docs.gradle.org/8.7/userguide/upgrading_version_8.html#sub:updating-gradle.
-> Downgrade plugin com.example:plugin:1.0 to an older version compatible with Gradle 7.6.</code></pre></div></div></section><section id="slide_specific_errors_for_common_issues_3" data-background-image="./images/gradle/bg-6.png" data-background-size="cover"><h2>Specific errors for common issues</h2>
-<div class="paragraph medium"><p>Variant ambiguity due to a single unspecified attribute (since Gradle 8.9)</p></div>
-<div class="listingblock wrap"><div class="content"><pre class="highlightjs highlight"><code class="language-text hljs" data-noescape="true" data-lang="text">FAILURE: Build failed with an exception.
-
-* What went wrong:
-A problem occurred configuring root project 'example'.
-> Could not resolve all files for configuration ':consumer'.
-    > Could not resolve com.squareup.okhttp3:okhttp:4.4.0.
-        Required by:
-            project :
-        > The consumer was configured to find attribute 'org.gradle.category' with value 'documentation'. There are several available matching variants of com.squareup.okhttp3:okhttp:4.4.0
-          <strong>The only attribute distinguishing these variants is 'org.gradle.docstype'. Add this attribute to the consumer's configuration to resolve the ambiguity:</strong>
-            - Value: 'javadoc' selects variant: 'javadocElements'
-            - Value: 'sources' selects variant: 'sourcesElements'
-            - Value: 'other' selects variant: 'additionalDocs'</code></pre></div></div></section><section id="slide_specific_errors_for_common_issues_4" data-background-image="./images/gradle/bg-6.png" data-background-size="cover"><h2>Specific errors for common issues</h2>
-<div class="paragraph medium"><p>Compilation errors at the end of the build (upcoming in Gradle 8.11)</p></div>
-<div class="listingblock wrap"><div class="content"><pre class="highlightjs highlight"><code class="language-text hljs" data-noescape="true" data-lang="text">* What went wrong:
-Execution failed for task ':project1:compileJava'.
-&gt; Compilation failed; see the compiler output below.
-
-Java compilation error (compilation:java:java-compilation-error)
-  sample-project/src/main/java/Problem.java:6: error: incompatible types: int cannot be converted to String
-          String a = 1;
-                     ^</code></pre></div></div></section><section id="slide_better_build_output" data-background-image="./images/gradle/bg-6.png" data-background-size="cover"><h2>Better build output</h2>
+&gt; Upgrade to at least Gradle 8.0. See the instructions at https://docs.gradle.org/8.7/userguide/upgrading_version_8.html#sub:updating-gradle.
+&gt; Downgrade plugin com.example:plugin:1.0 to an older version compatible with Gradle 7.6.</code></pre></div></div>
+<div class="ulist"><ul><li class="fragment"><p>Next in 8.8: JVM version mismatch</p></li></ul></div></section><section id="slide_better_build_output" data-background-image="./images/gradle/bg-6.png" data-background-size="cover"><h2>Better build output</h2>
 <div class="ulist"><ul><li class="fragment"><p>Better structured</p></li><li class="fragment"><p>Actionable</p></li><li class="fragment"><p>Documented</p></li></ul></div></section><section id="slide_concrete_example_before" data-background-image="./images/gradle/bg-6.png" data-background-size="cover"><h2>Concrete example - before</h2>
 <div class="listingblock wrap"><div class="content"><pre class="highlightjs highlight"><code class="language-text hljs" data-noescape="true" data-lang="text">FAILURE: Build failed with an exception.
 
@@ -217,9 +217,11 @@ Execution failed for task ':dependencies'.
    &gt; Invalid lock state for lock file specified in '&lt;project&gt;/lock.file'. Line: '&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD'
 
 * Try:
-&gt; Verify the lockfile content. For more information on lock file format, please refer to https://docs.gradle.org/8.6/userguide/dependency_locking.html#lock_state_location_and_format in the Gradle documentation.</code></pre></div></div></section><section id="slide_provider_api_and_laziness" data-background-color="#02303a" data-background-image="./images/gradle/bg-6.png" data-background-size="cover"><h2>Provider API and laziness</h2>
-<aside class="notes"><div class="paragraph"><p>Louis</p></div></aside></section><section id="slide_what_are_the_challenges" data-background-image="./images/gradle/bg-6.png" data-background-size="cover"><h2>What are the challenges?</h2></section><section id="slide_challenge_evaluation_ordering" data-background-image="./images/gradle/bg-6.png" data-background-size="cover"><h2>Challenge: Evaluation Ordering</h2>
-<div class="ulist"><ul><li class="fragment"><p>Build scripts are code</p></li><li class="fragment"><p>Code comes with evaluation ordering</p></li><li class="fragment"><p>How can you express that something is to be configured after a later operation?</p><div class="ulist"><ul><li><p><code>afterEvaluate</code> does not scale</p></li><li><p>How "after" do you need to be?</p></li></ul></div></li></ul></div></section><section id="slide_example" data-background-image="./images/gradle/bg-6.png" data-background-size="cover"><h2>Example</h2>
+&gt; Verify the lockfile content. For more information on lock file format, please refer to https://docs.gradle.org/8.6/userguide/dependency_locking.html#lock_state_location_and_format in the Gradle documentation.</code></pre></div></div></section><section id="slide_laziness_as_a_solution" data-background-color="#02303a" data-background-image="./images/gradle/bg-6.png" data-background-size="cover"><h2>Laziness as a solution</h2>
+<aside class="notes"><div class="paragraph"><p>Louis</p></div></aside></section><section id="slide_the_gradle_task_graph" data-background-image="./images/gradle/bg-6.png" data-background-size="cover"><h2>The Gradle task graph</h2>
+<div class="imageblock" style=""><img src="./images/task-dag-examples.png" alt="task dag examples"></div></section><section id="slide_challenge_evaluation_ordering" data-background-image="./images/gradle/bg-6.png" data-background-size="cover"><h2>Challenge: Evaluation Ordering</h2>
+<div class="ulist"><ul><li class="fragment"><p>Evaluation ordering</p><div class="ulist"><ul><li><p><code>afterEvaluate</code> does not scale</p></li><li><p>How "after" do you need to be?</p></li></ul></div></li></ul></div></section><section id="slide_challenge_execution_ordering" data-background-image="./images/gradle/bg-6.png" data-background-size="cover"><h2>Challenge: Execution Ordering</h2>
+<div class="ulist"><ul><li class="fragment"><p>Tasks produce files</p><div class="ulist"><ul><li><p>How do you make sure the consumer of that file <code>dependsOn</code> the producing task?</p></li></ul></div></li></ul></div></section><section id="slide_example" data-background-image="./images/gradle/bg-6.png" data-background-size="cover"><h2>Example</h2>
 <div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-kotlin hljs" data-noescape="true" data-lang="kotlin">val customTask = tasks.register&lt;ComputeArtifactId&gt;("customTask")
 subprojects {
     publishing {
@@ -227,32 +229,16 @@ subprojects {
             create&lt;MavenPublication&gt;("mavenJava") {
                 from(components["java"])
                 afterEvaluate {
-                    artifactId = customTask.flatMap { it.artifactId }.get()
+                    artifactId = customTask.get().artifactId.get()
                 }
             }
         }
     }
-}</code></pre></div></div></section><section id="slide_challenge_execution_ordering" data-background-image="./images/gradle/bg-6.png" data-background-size="cover"><h2>Challenge: Execution Ordering</h2>
-<div class="ulist"><ul><li class="fragment"><p>Tasks produce files</p></li><li class="fragment"><p>Other tasks consume those files</p></li><li class="fragment"><p>How do you make sure that consumer <code>dependsOn</code> the producing task?</p></li></ul></div></section><section id="slide_the_gradle_task_graph" data-background-image="./images/gradle/bg-6.png" data-background-size="cover"><h2>The Gradle task graph</h2>
-<div class="imageblock" style=""><img src="./images/task-dag-examples.png" alt="task dag examples"></div></section><section id="slide_solution" data-background-image="./images/gradle/bg-6.png" data-background-size="cover"><h2>Solution</h2>
-<div class="imageblock" style=""><img src="./images/laziness.png" alt="laziness"></div></section><section id="slide_provider_api" data-background-image="./images/gradle/bg-6.png" data-background-size="cover"><h2>Provider API</h2>
-<div class="ulist"><ul><li class="fragment"><p>Deferred value resolution</p></li><li class="fragment"><p>Automatic task dependency management</p></li><li class="fragment"><p>Improved build performance</p></li></ul></div></section><section id="slide_provider_api_evaluation_ordering" data-background-image="./images/gradle/bg-6.png" data-background-size="cover"><h2>Provider API: Evaluation <span class="line-through">Ordering</span></h2>
+}</code></pre></div></div></section><section id="slide_solution" data-background-image="./images/gradle/bg-6.png" data-background-size="cover"><h2>Solution</h2>
+<div class="imageblock" style=""><img src="./images/laziness.png" alt="laziness"></div></section><section id="slide_provider_api_evaluation_ordering" data-background-image="./images/gradle/bg-6.png" data-background-size="cover"><h2>Provider API: Evaluation Ordering</h2>
 <div class="ulist"><ul><li class="fragment"><p>Wire and derive values</p><div class="ulist"><ul><li><p>Without caring about <strong>when</strong> it is set</p></li></ul></div></li><li class="fragment"><p>Evaluation is done on demand</p><div class="ulist"><ul><li><p>Task does not run &#8594; No inputs are computed</p></li></ul></div></li></ul></div>
 <div class="paragraph small right top-margin"><small><a href="https://docs.gradle.org/current/userguide/lazy_configuration.html">docsg/lazy-configuration</a></small></div></section><section id="slide_provider_api_execution_ordering" data-background-image="./images/gradle/bg-6.png" data-background-size="cover"><h2>Provider API: Execution Ordering</h2>
-<div class="ulist"><ul><li class="fragment"><p>Task output properties</p></li><li class="fragment"><p>&nbsp;&nbsp;&nbsp;&nbsp; &#8594; used as input to another task</p></li><li class="fragment"><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &#8594; track task dependencies automatically.</p></li></ul></div></section><section id="slide_provider_api_lazy" data-background-image="./images/gradle/bg-6.png" data-background-size="cover"><h2>Provider API - Lazy</h2>
-<div class="imageblock" style=""><img src="./images/provider-api-lazy.png" alt="provider api lazy"></div></section><section id="slide_provider_api_eager" data-background-image="./images/gradle/bg-6.png" data-background-size="cover"><h2>Provider API - Eager</h2>
-<div class="imageblock" style=""><img src="./images/provider-api-eager.png" alt="provider api eager"></div></section><section id="slide_kotlin_dsl_assignment" data-background-image="./images/gradle/bg-6.png" data-background-size="cover"><h2>Kotlin DSL assignment</h2>
-<div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-kotlin hljs" data-noescape="true" data-lang="kotlin">interface Extension {
-    val description: Property&lt;String&gt;
-}
-
-// register "extension" with type Extension
-extension {
-    // Using the set() method call
-    description.set("Hello Property")
-    // Using lazy property assignment
-    description = "Hello Property"
-}</code></pre></div></div></section><section id="slide_demo" data-background-color="#02303a" data-background-image="./images/gradle/bg-6.png" data-background-size="cover"><h2>Demo</h2></section><section id="slide_task_wiring_example" data-background-image="./images/gradle/bg-6.png" data-background-size="cover">
+<div class="ulist"><ul><li class="fragment"><p>Task output properties</p></li><li class="fragment"><p>&nbsp;&nbsp;&nbsp;&nbsp;used as input to another task</p></li><li class="fragment"><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;track task dependencies automatically.</p></li></ul></div></section><section id="slide_task_wiring_example" data-background-image="./images/gradle/bg-6.png" data-background-size="cover">
 <div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-kotlin hljs" data-noescape="true" data-lang="kotlin">val producer = tasks.register&lt;Producer&gt;("producer")
 val consumer = tasks.register&lt;Consumer&gt;("consumer")
 
@@ -273,7 +259,9 @@ producer {
 // Change the build directory.
 // Don't need to update producer.outputFile and consumer.inputFile.
 // These are automatically updated as the build directory changes
-layout.buildDirectory = layout.projectDirectory.dir("output")</code></pre></div></div></section><section id="slide_adoption_challenge" data-background-image="./images/gradle/bg-6.png" data-background-size="cover"><h2>Adoption challenge</h2>
+layout.buildDirectory = layout.projectDirectory.dir("output")</code></pre></div></div></section><section id="slide_provider_api_lazy" data-background-image="./images/gradle/bg-6.png" data-background-size="cover"><h2>Provider API - Lazy</h2>
+<div class="imageblock" style=""><img src="./images/provider-api-lazy.png" alt="provider api lazy"></div></section><section id="slide_provider_api_eager" data-background-image="./images/gradle/bg-6.png" data-background-size="cover"><h2>Provider API - Eager</h2>
+<div class="imageblock" style=""><img src="./images/provider-api-eager.png" alt="provider api eager"></div></section><section id="slide_adoption_challenge" data-background-image="./images/gradle/bg-6.png" data-background-size="cover"><h2>Adoption challenge</h2>
 <div class="ulist"><ul><li class="fragment"><p>Existing Gradle API is large</p><div class="ulist"><ul><li><p>Lots of "properties" to convert</p></li></ul></div></li><li class="fragment"><p>Alternative (minor) &#8594; Deprecation (minor) &#8594; Removal (major)</p><div class="ulist"><ul><li><p>Disruptive cycle</p></li><li><p>Long cycle</p></li></ul></div></li><li class="fragment"><p>Bridging plain properties and Provider API is awkward</p></li><li class="fragment"><p>In short, does not scale</p></li></ul></div></section><section id="slide_builddir_example" data-background-image="./images/gradle/bg-6.png" data-background-size="cover"><h2><code>buildDir</code> example</h2>
 <div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-kotlin hljs" data-noescape="true" data-lang="kotlin">// Returns a java.io.File
 file("$buildDir/myOutput.txt")</code></pre></div></div>
@@ -285,136 +273,99 @@ val output: Provider&lt;RegularFile&gt; = layout.buildDirectory.file("myOutput.t
 output.get().asFile
 
 // Or a path for a lazy String based API
-output.map { it.asFile.path }</code></pre></div></div></section><section id="slide_provider_api_migration" data-background-image="./images/gradle/bg-6.png" data-background-size="cover"><h2>Provider API migration</h2>
-<div class="ulist"><ul><li class="fragment"><p>Do a large scale migration of Gradle APIs in Gradle 9.0</p></li><li class="fragment"><p>Supported by automatic runtime conversions for plugins</p></li><li class="fragment"><p>Requires polishing the Provider API itself</p></li><li class="fragment"><p>Does not resolve the adoption by community plugins</p></li></ul></div></section><section id="slide_agenda_2" data-background-image="./images/gradle/bg-10.png" data-background-size="cover"><h2>Agenda</h2>
-<div class="ulist"><ul><li><p>Core evolutions</p></li><li><p>Build comprehensibility</p><div class="ulist"><ul><li><p>Errors, warnings</p></li><li><p>Provider API and laziness</p></li></ul></div></li><li><p><strong>Build scalability</strong></p><div class="ulist"><ul><li><p>Guiding principles</p></li><li><p>Configuration cache</p></li></ul></div></li><li><p>A peek into the future</p></li></ul></div></section></section>
-<section><section id="slide_build_scalability" data-background-color="#02303a" data-background-image="./images/gradle/bg-7.png" data-background-size="cover"><h2>Build scalability</h2><div class="paragraph"><p>&#x1F680;</p></div></section><section id="slide_who_has_a_long_build" data-background-image="./images/gradle/bg-7.png" data-background-size="cover"><h2>Who has a long build?</h2>
-<div class="ulist"><ul><li class="fragment"><p>1 hour and more?</p></li><li class="fragment"><p>30 minutes and more?</p></li><li class="fragment"><p>5 minutes and more?</p></li><li class="fragment"><p>less than a minute?</p></li></ul></div></section><section id="slide_gradle_vision_scalability" data-background-image="./images/gradle/bg-7.png" data-background-size="cover"><h2>Gradle vision: scalability</h2>
-<div class="quoteblock center"><blockquote><div class="paragraph"><p>Gradle Build Tool is an open-source build system
-that automates the process of building software of
-any type, <strong>size, or complexity in a fast</strong> and reliable <strong>manner</strong></p></div></blockquote></div></section><section id="slide_guiding_principles" data-background-color="#02303a" data-background-image="./images/gradle/bg-7.png" data-background-size="cover"><h2>Guiding principles</h2>
-<div class="quoteblock"><blockquote><div class="paragraph"><p>Overhead should be proportional to the impact of the change</p></div></blockquote></div></section><section id="slide_prioritization_based_on_use_cases" data-background-image="./images/gradle/bg-7.png" data-background-size="cover"><h2>Prioritization based on use-cases</h2>
-<div class="ulist"><ul><li class="fragment"><p>Inner developer loop</p><div class="ulist"><ul><li><p>Code, Build and Test</p></li></ul></div></li><li class="fragment"><p>Outer developer loop</p><div class="ulist"><ul><li><p>Sync</p></li><li><p>Integrate</p><div class="ulist"><ul><li><p>Stateful CI/CD</p></li><li><p>Ephemeral CI/CD</p></li></ul></div></li></ul></div></li></ul></div></section><section id="slide_gradle_build_anatomy" data-background-image="./images/gradle/bg-7.png" data-background-size="cover"><h2>Gradle build anatomy</h2>
-<div class="imageblock" style=""><img src="./images/gradle-build-anatomy.png" alt="gradle build anatomy"></div>
-<div class="paragraph small right top-margin"><small><strong>Bars not to scale</strong></small></div></section><section id="slide_primary_strategies" data-background-color="#02303a" data-background-image="./images/gradle/bg-7.png" data-background-size="cover"><h2>Primary strategies</h2></section><section id="slide_performance_focus" data-background-image="./images/gradle/bg-7.png" data-background-size="cover"><h2>Performance focus</h2>
-<div class="ulist"><ul><li class="fragment"><p>Work avoidance</p><div class="ulist"><ul><li><p>Minimize unnecessary work, enhancing efficiency</p></li></ul></div></li><li class="fragment"><p>Parallelism</p><div class="ulist"><ul><li><p>Maximize speed by leveraging concurrent processing</p></li></ul></div></li></ul></div></section><section id="slide_execution_work_avoidance" data-background-image="./images/gradle/bg-7.png" data-background-size="cover"><h2>Execution work avoidance</h2>
-<div class="ulist"><ul><li><p>Up-to-date tasks</p></li><li><p>Output caching</p><div class="ulist"><ul><li><p>Tasks</p></li><li><p>And more</p></li><li><p>Local and remote</p></li></ul></div></li><li><p>Incremental tasks</p></li></ul></div></section><section id="slide_execution_work_avoidance_with_develocity" data-background-image="./images/gradle/bg-7.png" data-background-size="cover"><h2>Execution work avoidance with Develocity</h2>
-<div class="ulist"><ul><li><p>Replicated remote caching of outputs</p></li><li><p>Predictive test selection</p></li></ul></div></section><section id="slide_execution_parallelism" data-background-image="./images/gradle/bg-7.png" data-background-size="cover"><h2>Execution parallelism</h2>
-<div class="ulist"><ul><li><p>Parallel test execution</p></li><li><p>Parallel task execution</p></li><li><p>Worker API</p></li></ul></div></section><section id="slide_execution_parallelism_with_develocity" data-background-image="./images/gradle/bg-7.png" data-background-size="cover"><h2>Execution parallelism with Develocity</h2>
-<div class="ulist"><ul><li><p>Test Distribution</p></li></ul></div></section><section id="slide_configuration_work_avoidance" data-background-color="#02303a" data-background-image="./images/gradle/bg-7.png" data-background-size="cover"><h2>Configuration work avoidance</h2></section><section id="slide_gradle_configuration_cache" data-background-image="./images/gradle/bg-7.png" data-background-size="cover"><h2>Gradle Configuration Cache</h2>
-<div class="ulist"><ul><li><p>The Configuration Cache is</p><div class="ulist"><ul><li class="fragment"><p>a feature that significantly improves the inner developer loop performance</p></li><li class="fragment"><p>by caching the result of the configuration phase</p></li><li class="fragment"><p>and reusing this for subsequent builds.</p></li></ul></div></li></ul></div></section><section id="slide_what_is_cached" data-background-image="./images/gradle/bg-7.png" data-background-size="cover"><h2>What is cached?</h2>
-<div class="ulist"><ul><li class="fragment"><p>Task graph</p></li><li class="fragment"><p>Task inputs</p></li><li class="fragment"><p>All the rest is discarded</p><div class="ulist"><ul><li><p>No <code>project</code> state anymore</p></li></ul></div></li></ul></div></section><section id="slide_example_of_invalid_input" data-background-image="./images/gradle/bg-7.png" data-background-size="cover"><h2>Example of invalid input</h2>
-<div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-kotlin hljs" data-noescape="true" data-lang="kotlin">abstract class SomeTask : DefaultTask() {
+output.map { it.asFile.path }</code></pre></div></div></section><section id="slide_kotlin_dsl_assignment" data-background-image="./images/gradle/bg-6.png" data-background-size="cover"><h2>Kotlin DSL assignment</h2>
+<div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-kotlin hljs" data-noescape="true" data-lang="kotlin">interface Extension {
+    val description: Property&lt;String&gt;
+}
 
-    @get:Input lateinit var sourceSet: SourceSet
-
-    @TaskAction
-    fun action() {
-        val classpathFiles = sourceSet.compileClasspath.files
-        // Do something with the files
+// register "extension" with type Extension
+extension {
+    // Using the set() method call
+    description.set("Hello Property")
+    // Using lazy property assignment
+    description = "Hello Property"
+}</code></pre></div></div></section><section id="slide_demo_2" data-background-color="#02303a" data-background-image="./images/gradle/bg-6.png" data-background-size="cover"><h2>Demo</h2></section><section id="slide_provider_api_migration" data-background-image="./images/gradle/bg-6.png" data-background-size="cover"><h2>Provider API migration</h2>
+<div class="ulist"><ul><li class="fragment"><p>Do a large scale migration of Gradle APIs in Gradle 9.0</p></li><li class="fragment"><p>Supported by automatic conversion for plugins</p></li><li class="fragment"><p>Requires polishing the Provider API itself</p></li><li class="fragment"><p>Does not resolve the adoption by community plugins</p></li></ul></div></section><section id="slide_modeling" data-background-color="#02303a" data-background-image="./images/gradle/bg-6.png" data-background-size="cover"><h2>Modeling</h2>
+<aside class="notes"><div class="paragraph"><p>Paul</p></div></aside></section><section id="slide_raising_the_abstraction" data-background-image="./images/gradle/bg-6.png" data-background-size="cover"><h2>Raising the abstraction</h2>
+<div class="ulist"><ul><li class="fragment"><p>Gradle has an amazing execution model</p></li><li class="fragment"><p>But leveraging it requires expertise</p></li><li class="fragment"><p>Common use cases are not always easy to express</p></li></ul></div></section><section id="slide_adding_a_test_suite" data-background-image="./images/gradle/bg-6.png" data-background-size="cover"><h2>Adding a test suite</h2>
+<div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-kotlin hljs" data-noescape="true" data-lang="kotlin">sourceSets {
+    create("intTest") {
+        compileClasspath += sourceSets.main.map { it.output }
+        runtimeClasspath += sourceSets.main.map { it.output }
     }
-}</code></pre></div></div>
-<div class="paragraph"><p>needs to become</p></div>
-<div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-kotlin hljs" data-noescape="true" data-lang="kotlin">abstract class SomeTask : DefaultTask() {
+}
 
-    @get:InputFiles @get:Classpath
-    abstract val classpath: ConfigurableFileCollection
+configurations["intTestImplementation"].extendsFrom(configurations.implementation.get())
+configurations["intTestRuntimeOnly"].extendsFrom(configurations.runtimeOnly.get())
 
-    @TaskAction
-    fun action() {
-        val classpathFiles = classpath.files
-        // Do something with the files
+dependencies {
+    "intTestImplementation"("junit:junit:4.13")
+}</code></pre></div></div></section><section id="slide_modern_test_suite" data-background-image="./images/gradle/bg-6.png" data-background-size="cover"><h2>Modern test suite</h2>
+<div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-kotlin hljs" data-noescape="true" data-lang="kotlin">testing {
+    suites {
+        register&lt;JvmTestSuite&gt;("integrationTest") {
+            dependencies {
+                implementation("junit:junit:4.13")
+            }
+        }
     }
-}</code></pre></div></div>
-<div class="paragraph"><p>configured with</p></div>
-<div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-kotlin hljs" data-noescape="true" data-lang="kotlin">classpath.from(sourceSet.compileClasspath)</code></pre></div></div></section><section id="slide_demo_2" data-background-color="#02303a" data-background-image="./images/gradle/bg-7.png" data-background-size="cover"><h2>Demo</h2>
-<aside class="notes"><div class="ulist"><ul><li><p>sooner</p></li><li><p>intra project parallel</p></li></ul></div></aside></section><section id="slide_additional_benefits" data-background-image="./images/gradle/bg-7.png" data-background-size="cover"><h2>Additional benefits</h2>
-<div class="ulist"><ul><li class="fragment"><p>Better parallelism at execution</p><div class="ulist"><ul><li><p>Intra project task parallelism</p></li></ul></div></li><li class="fragment"><p>Reduced memory usage on CC hits</p><div class="ulist"><ul><li><p>No configuration state is created</p></li></ul></div></li></ul></div></section><section id="slide_can_you_use_it_for_your_build" data-background-image="./images/gradle/bg-7.png" data-background-size="cover"><h2>Can you use it for your build?</h2>
-<div class="ulist"><ul><li class="fragment"><p>It depends on your build</p><div class="ulist"><ul><li><p>You may have to refactor custom build-logic</p></li></ul></div></li><li class="fragment"><p>Most popular plugins out there are already compatible</p></li><li class="fragment"><p>You can selectively declare incompatible tasks<br>
-<code class="small">tasks.some { notCompatibleWithConfigurationCache("because") }</code></p></li><li class="fragment"><p>This is about applying best practices anyway</p></li></ul></div>
-<aside class="notes"><div class="ulist"><ul><li><p>The amount of required work will directly depend on the 3rd party plugins you use and the amount of custom build logic you have.</p></li></ul></div></aside></section><section id="slide_configuration_cache_report" data-background-image="./images/gradle/bg-7.png" data-background-size="cover"><h2>Configuration Cache Report</h2>
-<div class="paragraph"><p><span class="image"><img src="./images/cc-report.png" alt="cc report" width="90%"></span></p></div>
-<aside class="notes"><div class="ulist"><ul><li><p>Local report created on every invocation when CC is enabled</p><div class="ulist"><ul><li><p>Useful for adoption</p></li><li><p>Lists violations with stack traces</p></li><li><p>Can help determining extra inputs that may reduce CC hit rates</p></li></ul></div></li><li><p>Got nice over the recent releases</p><div class="ulist"><ul><li><p>Shows the build and clearly states which tasks were requested</p></li><li><p>Shows the reason why CC miss happened</p></li></ul></div></li></ul></div></aside></section><section id="slide_configuration_cache_report_2" data-background-image="./images/gradle/bg-7.png" data-background-size="cover"><h2>Configuration Cache Report</h2>
-<div class="paragraph medium"><p>Ergonomic stacktraces attached to problems</p></div>
-<div class="paragraph"><p><span class="image"><img src="./images/cc-report-problems.png" alt="cc report problems"></span></p></div>
-<aside class="notes"><div class="ulist"><ul><li><p>Hinting at the most relevant user code</p></li><li><p>Compact stack traces for problems</p></li><li><p>When copying from the page the visual whitespace is preserved</p></li></ul></div></aside></section><section id="slide_configuration_cache_report_3" data-background-image="./images/gradle/bg-7.png" data-background-size="cover"><h2>Configuration Cache Report</h2>
-<div class="paragraph medium"><p>Summary of tasks marked as incompatible</p></div>
-<div class="paragraph"><p><span class="image"><img src="./images/cc-report-incompatible-tasks.png" alt="cc report incompatible tasks"></span></p></div></section><section id="slide_space_usage_analysis" data-background-image="./images/gradle/bg-7.png" data-background-size="cover"><h2>Space Usage Analysis</h2>
-<div class="ulist"><ul><li class="fragment"><p>Useful if your cached state is too big</p></li><li class="fragment"><p>External tool <a href="https://github.com/gradle/gcc2speedscope">gradle/gcc2speedscope</a></p></li><li class="fragment"><p>Helps identify "task state leaks"<br>
-<span class="image"><img src="./images/gcc2speedscope.png" alt="gcc2speedscope" width="80%"></span></p></li></ul></div>
-<aside class="notes"><div class="ulist"><ul><li><p>If you adopted CC and looking for ways to optimize</p></li></ul></div></aside></section><section id="slide_what_about_cc_on_ci" data-background-image="./images/gradle/bg-7.png" data-background-size="cover"><h2>What about CC on CI?</h2>
-<div class="ulist"><ul><li><p>Not officially supported</p></li><li><p>Absolute paths</p></li><li><p>Need to have build logic and dependencies as well</p></li></ul></div>
-<aside class="notes"><div class="ulist"><ul><li><p>TODO Explain challenges</p></li></ul></div></aside></section><section id="slide_what_performance_benefits" data-background-image="./images/gradle/bg-7.png" data-background-size="cover"><h2>What performance benefits?</h2>
-<div class="ulist"><ul><li class="fragment"><p>It depends on your build</p></li><li class="fragment"><p>It&#8217;s not only about avoiding the configuration phase</p></li><li class="fragment"><p>All tasks will run in parallel, always</p></li><li class="fragment"><p>Configuration model memory can be freed</p></li><li class="fragment"><p>Small builds will mostly benefit from more parallelism</p></li><li class="fragment"><p>Large builds will also benefit from avoided configuration</p></li></ul></div></section><section id="slide_what_performance_benefits_2" data-background-image="./images/gradle/bg-7.png" data-background-size="cover"><h2>What performance benefits?</h2>
-<div class="ulist"><ul><li class="fragment"><p>For example: Square, on their <strong>large</strong> Android build</p></li><li class="fragment"><p>Early adopters - <a href="https://developer.squareup.com/blog/5-400-hours-a-year-saving-developers-time-and-sanity-with-gradles/">Blog Post</a> - December 2022</p></li><li class="fragment"><p><em>decreased our local build times from 182 hours to 25 hours per week!</em></p></li><li class="fragment"><p><em>Saving 5,400 hours a year with Gradle&#8217;s Configuration Cache</em></p></li><li class="fragment"><p><em>Recovering an estimated $1.1 million in lost productivity annually</em></p></li></ul></div></section><section id="slide_recent_performance_improvements" data-background-image="./images/gradle/bg-7.png" data-background-size="cover"><h2>Recent performance improvements</h2>
-<div class="ulist"><ul><li><p>Smaller cache entries / Faster load times (<code>8.10</code>)</p></li><li><p>Parallel load of cache entries (<code>8.11</code>)</p></li><li><p>Parallel store of cache entries (<code>8.11</code> opt-in)</p></li><li><p>More efficient storage (in-progress)</p></li></ul></div></section><section id="slide_performance_gains_in_8_10" data-background-image="./images/gradle/bg-7.png" data-background-size="cover"><h2>Performance gains in 8.10</h2>
-<div class="paragraph medium"><p>Smaller cache entries / Faster load times</p></div>
-<div class="ulist medium"><ul><li><p>On the Gradle build:</p><div class="ulist"><ul><li><p>Miss: -2.75%</p></li><li><p>Hit: -23.46%</p></li><li><p>Storage: -57.4%</p></li></ul></div></li><li><p>On a large synthetic Android build (3400+ modules):</p><div class="ulist"><ul><li><p>Miss: -7.67%</p></li><li><p>Hit: -28.09%</p></li><li><p>Storage: -72.6%</p></li></ul></div></li></ul></div>
-<div class="paragraph medium right top-margin"><p><a href="https://docs.gradle.org/8.10.2/release-notes.html">details in release notes</a></p></div></section><section id="slide_configuration_cache_status" data-background-image="./images/gradle/bg-7.png" data-background-size="cover"><h2>Configuration Cache status</h2>
-<div class="ulist"><ul><li><p>Widely adopted by the ecosystem and community</p></li><li><p>Brings direct benefits to developer productivity</p></li><li><p>Keeps getting faster and easier to adopt</p></li><li><p>Unlocks more upcoming performance features</p></li></ul></div>
-<aside class="notes"><div class="ulist"><ul><li><p>There is no reason at this point to not do it</p></li></ul></div></aside></section></section>
+}</code></pre></div></div></section><section id="slide_going_further_with_dependency_declarations" data-background-image="./images/gradle/bg-6.png" data-background-size="cover"><h2>Going further with dependency declarations</h2>
+<div class="ulist"><ul><li><p>Introduce a <code>dependencies</code> block</p><div class="ulist"><ul><li class="fragment"><p>That can be reused in different contexts</p></li><li class="fragment"><p>Where configuration names are the same <em>but contextual</em></p></li><li class="fragment"><p>Matches patterns from other ecosystems like Android or Kotlin</p></li></ul></div></li></ul></div></section><section id="slide_kotlin_multi_platform_example" data-background-image="./images/gradle/bg-6.png" data-background-size="cover"><h2>Kotlin Multi platform example</h2>
+<div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-kotlin hljs" data-noescape="true" data-lang="kotlin">kotlin {
+    sourceSets {
+        commonMain.dependencies {
+            // kotlinx.coroutines will be available in all source sets
+            implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
+        }
+        androidMain.dependencies {}
+        iosMain.dependencies {
+            // SQLDelight will be available only in the iOS source set, but not in Android or common
+            implementation("com.squareup.sqldelight:native-driver:2.0.0")
+        }
+    }
+}</code></pre></div></div></section></section>
 <section><section id="slide_peeking_into_the_future" data-background-color="#02303a" data-background-image="./images/gradle/bg-4.png" data-background-size="cover"><h2>Peeking into the future</h2><div class="paragraph"><p>&#x1F52E;</p></div></section><section id="slide_gradle_9_objectives" data-background-color="#02303a" data-background-image="./images/gradle/bg-4.png" data-background-size="cover"><h2>Gradle 9 objectives</h2>
 <div class="paragraph"><p>🐘</p></div>
-<aside class="notes"><div class="paragraph"><p>Both</p></div></aside></section><section id="slide_gradle_9_core_updates" data-background-image="./images/gradle/bg-4.png" data-background-size="cover"><h2>Gradle 9 - 🐘 Core updates</h2>
-<div class="ulist"><ul><li class="fragment"><p>Java 17 minimum for Gradle daemon, Java 8 for workers</p></li><li class="fragment"><p>Kotlin Language 2.0 support in our Kotlin DSL</p></li><li class="fragment"><p>Groovy 4</p></li><li class="fragment"><p>Tools and libraries updates</p></li><li class="fragment"><p>Many bug fixes and improvements</p></li></ul></div></section><section id="slide_gradle_9_comprehensibility" data-background-image="./images/gradle/bg-4.png" data-background-size="cover"><h2>Gradle 9 - &#x1F4A1; Comprehensibility</h2>
-<div class="ulist"><ul><li class="fragment"><p>Provider API 1.0</p><div class="ulist"><ul><li><p>Feature complete for supported use cases</p></li></ul></div></li><li class="fragment"><p>Provider API Migration</p><div class="ulist"><ul><li><p>Binary compatible migration for 3rd party plugins</p></li><li><p>Source-compatible migration for local build logic</p></li></ul></div></li><li class="fragment"><p>Problems API</p></li></ul></div></section><section id="slide_gradle_9_scalability" data-background-image="./images/gradle/bg-4.png" data-background-size="cover"><h2>Gradle 9 - &#x1F680; Scalability</h2>
-<div class="ulist"><ul><li class="fragment"><p>Configuration Cache recommended</p><div class="ulist"><ul><li class="fragment"><p>Deprecation warning if not enabled in later 9.x</p></li></ul></div></li><li class="fragment"><p>Accumulated performance improvements and memory optimizations</p></li></ul></div></section><section id="slide_gradle_9_0_timeline" data-background-image="./images/gradle/bg-4.png" data-background-size="cover"><h2>Gradle 9.0 timeline</h2>
-<div class="ulist"><ul><li><p>Q1 2025 release (tentative)</p></li><li><p><a href="https://github.com/orgs/gradle/projects/31/views/1">gradle-roadmap</a></p></li></ul></div>
-<div class="imageblock" style=""><img src="./images/gradle_roadmap.png" alt="gradle roadmap"></div></section><section id="slide_ongoing_work" data-background-color="#02303a" data-background-image="./images/gradle/bg-4.png" data-background-size="cover"><h2>Ongoing work</h2></section></section>
-<section><section id="slide_isolated_projects" data-background-color="#02303a" data-background-image="./images/gradle/bg-4.png" data-background-size="cover"><h2>Isolated Projects</h2><div class="paragraph"><p>🎶</p></div></section><section id="slide_limitations_of_configuration_cache" data-background-image="./images/gradle/bg-4.png" data-background-size="cover"><h2>Limitations of Configuration Cache</h2>
-<div class="ulist"><ul><li class="fragment"><p>What about the work of the build engineer?</p></li><li class="fragment"><p>What about dependency upgrades and other build focused engineering tasks?</p></li></ul></div>
-<aside class="notes"><div class="paragraph"><p>Alex</p></div>
-<div class="ulist"><ul><li><p>Invalidation</p></li><li><p>No Remote  Cache</p></li></ul></div></aside></section><section id="slide_did_you_say_cache_miss" data-background-image="./images/gradle/bg-4.png" data-background-size="cover"><h2>Did you say cache miss?</h2>
-<div class="ulist"><ul><li class="fragment"><p>On a miss, the configuration phase needs to run</p></li><li class="fragment"><p>But, with no shared mutable state between projects, it could</p><div class="ulist"><ul><li class="fragment"><p>Run in parallel</p><div class="ulist"><ul><li><p>following the projects hierarchy</p></li></ul></div></li><li class="fragment"><p>Be cached incrementally</p><div class="ulist"><ul><li><p>task sub-graphs cached per project</p></li></ul></div></li></ul></div></li></ul></div></section><section id="slide_isolated_projects_constraints" data-background-image="./images/gradle/bg-4.png" data-background-size="cover"><h2>Isolated Projects constraints</h2>
-<div class="olist arabic"><ol class="arabic"><li><p>No <em>mutable</em> cross-project access during configuration</p></li></ol></div></section><section id="slide_constraints_violations" data-background-image="./images/gradle/bg-4.png" data-background-size="cover"><h2>Constraints violations</h2>
-<div class="quoteblock medium"><blockquote><div class="paragraph"><p>Access to mutable state of another project is forbidden</p></div></blockquote></div>
-<div class="paragraph medium top-margin"><p>Examples:</p></div>
-<div class="ulist medium"><ul><li class="fragment"><p><code>allprojects { group = "&#8230;&#8203;" }</code></p></li><li class="fragment"><p><code>version = rootProject.version</code></p></li><li class="fragment"><p><code>dependsOn(project(":b").tasks.findByName("foo"))</code></p></li></ul></div>
-<aside class="notes"><div class="ulist"><ul><li><p>What does it mean in practice?</p></li></ul></div></aside></section><section id="slide_directions_of_development" data-background-image="./images/gradle/bg-4.png" data-background-size="cover"><h2>Directions of development</h2>
-<div class="ulist"><ul><li><p>Performance benefits</p></li><li><p>Compatible APIs and patterns</p></li><li><p>Ecosystem adoption</p></li></ul></div>
-<aside class="notes"><div class="ulist"><ul><li><p>The team&#8217;s approach is to make incremental progress on all fronts and get feedback</p></li><li><p>Currently, we work with select early adopters</p><div class="ulist"><ul><li><p>There are also enthusiasts</p></li></ul></div></li><li><p>Later we&#8217;ll announce the feature wider and ask for community to try it out</p></li></ul></div></aside></section><section id="slide_isolated_projects_adoption" data-background-image="./images/gradle/bg-4.png" data-background-size="cover"><h2>Isolated Projects Adoption</h2>
-<div class="ulist"><ul><li><p>Ecosystem plugins</p><div class="ulist"><ul><li><p>Java ☑️</p></li><li><p>Kotlin 🏗️</p></li><li><p>Android 🏗️</p></li></ul></div></li><li><p>Other plugins</p><div class="ulist"><ul><li><p>Core validation plugins ☑️</p></li><li><p>Other core plugins ⏳</p></li><li><p>Popular community plugins ⏳</p></li></ul></div></li></ul></div></section><section id="slide_performance_benefits" data-background-image="./images/gradle/bg-4.png" data-background-size="cover"><h2>Performance benefits</h2>
-<div class="ulist"><ul><li><p>Parallel CC store ☑️</p></li><li><p>Parallel configuration for Sync ☑️</p></li><li><p>Parallel configuration for CLI ☑️</p></li><li><p>Incremental configuration for Sync 🏗️</p></li><li><p>Incremental configuration for CLI</p></li></ul></div>
-<aside class="notes"><div class="ulist"><ul><li><p>Focus is on speeding up the IDE experience first</p></li></ul></div></aside></section><section id="slide_isolated_projects_friendly_patterns" data-background-image="./images/gradle/bg-4.png" data-background-size="cover"><h2>Isolated Projects-friendly patterns</h2>
-<div class="ulist"><ul><li><p>Convention plugins</p></li><li><p>Task-output sharing via dependency management</p></li></ul></div>
-<aside class="notes"><div class="ulist"><ul><li><p>Problem: root project (or applied plugin) configuring other projects</p></li><li><p>Dependency management is mostly IP-compatible by design</p></li></ul></div></aside></section><section id="slide_isolated_projects_safe_apis" data-background-image="./images/gradle/bg-4.png" data-background-size="cover"><h2>Isolated Projects-safe APIs</h2>
-<div class="ulist medium"><ul><li class="fragment"><p>Safe project view&#8201;&#8212;&#8201;<code>IsolatedProject</code></p><div class="ulist"><ul><li><p><code>rootProject.isolated.projectDirectory</code></p></li></ul></div></li><li class="fragment"><p>New lifecycle callbacks&#8201;&#8212;&#8201;<code>GradleLifecycle</code></p><div class="ulist"><ul><li><p><code>gradle.lifecycle.beforeProject { group = "&#8230;&#8203;" }</code></p></li></ul></div></li><li class="fragment"><p>Project-free dependencies with capabilities&#8201;&#8212;&#8201;<code>requireFeature()</code></p><div class="ulist"><ul><li><p><code>implementation(project(":other"))</code><br>
-<code>{ capabilities { requireFeature("foo") } }</code></p></li></ul></div></li></ul></div>
-<aside class="notes"><div class="ulist"><ul><li><p>More APIs are coming in the next releases to simplify common use-cases</p></li></ul></div></aside></section><section id="slide_demo_3" data-background-color="#02303a" data-background-image="./images/gradle/bg-7.png" data-background-size="cover"><h2>Demo</h2>
-<aside class="notes"><div class="ulist"><ul><li><p>Use <code>ip-parallel</code> demo</p></li><li><p>Note on latest versions (Gradle 8.11-milestone, IDEA EAP)</p></li><li><p>Parallel configuration for CLI</p></li><li><p>Parallel configuration for Sync</p></li><li><p>Introduce a violation with allprojects-sets-group</p></li><li><p>Show the violation in the report</p></li><li><p>Fix the violation</p></li></ul></div></aside></section><section id="slide_isolated_projects_status" data-background-image="./images/gradle/bg-4.png" data-background-size="cover"><h2>Isolated Projects Status</h2>
-<div class="ulist"><ul><li><p>Alpha experiment on top of the Configuration Cache</p></li><li><p>Focuses on speeding up the IDE experience first</p></li><li><p>Interesting for early adopters</p></li></ul></div>
-<aside class="notes"><div class="ulist"><ul><li><p>We&#8217;re really close to have IntelliJ and Gradle ready for early adopters</p></li></ul></div></aside></section><section id="slide_early_adoption_approach"><h2>Early adoption approach</h2><div class="ulist"><ul><li><p>Read Isolated Projects overview in the <a href="https://docs.gradle.org/current/userguide/isolated_projects.html">userguide</a></p></li><li><p>Start with the <code>help</code> task with<br>
-<code class="medium">-Dorg.gradle.unsafe.isolated-projects=true</code></p><div class="ulist"><ul><li><p>Inspect the violations in the report</p></li></ul></div></li><li><p>For Sync, add the line to the <code>gradle.properties</code><br>
-<code class="medium">org.gradle.unsafe.isolated-projects=true</code></p></li><li><p>Report found problems to community plugins you use</p></li></ul></div>
-<aside class="notes"><div class="ulist"><ul><li><p>Be CC compatible</p></li><li><p>Remember to use the latest Gradle and the latest IDEA</p></li><li><p>Should work for Java-only projects</p></li><li><p>Can still be interesting to gauge the scope for, say, Kotlin projects</p></li></ul></div></aside></section></section>
-<section><section id="slide_declarative_gradle" data-background-color="#02303a" data-background-image="./images/gradle/bg-4.png" data-background-size="cover"><h2>Declarative Gradle</h2><div class="paragraph"><p>🐘</p></div><aside class="notes"><div class="paragraph"><p>Louis</p></div></aside></section><section id="slide_challenges" data-background-image="./images/gradle/bg-4.png" data-background-size="cover"><h2>Challenges 🔥</h2>
-<div class="paragraph"><p>Gradle&#8217;s build language characteristics:</p></div>
-<div class="ulist"><ul><li class="fragment"><p>Flexible, extensible, &amp; adaptable to complex requirements 👍</p></li><li class="fragment"><p>Appreciated by advanced users 👍</p></li><li class="fragment"><p>Significant learning curve 👎</p></li><li class="fragment"><p>Projects often look very different from one another 👎</p></li></ul></div>
-<aside class="notes"><div class="ulist"><ul><li><p>While it has long been a best practice that build scripts should be declarative, and the build logic should be kept in plugins, this is not the reality for many projects.</p></li><li><p>We’ve seen projects in the wild that mix declarative and imperative code and make build scripts that are long and complex.</p></li><li><p>Gradle-specific concepts used in build scripts are not always familiar to software developers.</p></li><li><p>This can make Gradle less approachable for developers unfamiliar with Gradle.</p></li><li><p>At the same time, it makes it difficult for the IDEs to offer reliable support for editing build scripts.</p></li></ul></div></aside></section><section id="slide_mission_statement" data-background-image="./images/gradle/bg-4.png" data-background-size="cover"><h2>Mission statement</h2>
-<div class="quoteblock center"><blockquote><div class="paragraph"><p>Gradle Build Tool is an open-source build system
-that automates the process of building software of
-any type, size, or complexity in a fast and reliable manner</p></div></blockquote></div>
-<div class="quoteblock"><blockquote><div class="paragraph"><p>What sets Gradle Build Tool apart is its elegant and extensible declarative build language that enables expressing
-any build in a clear and understandable way.</p></div></blockquote></div></section><section id="slide_how_do_we_do" data-background-image="./images/gradle/bg-4.png" data-background-size="cover"><h2>How do we do?</h2>
-<div class="quoteblock"><blockquote><div class="paragraph"><p>What sets Gradle Build Tool apart is its <strong>elegant and extensible declarative build language that enables expressing
-any build in a clear and understandable way</strong>.</p></div></blockquote></div>
-<div class="paragraph"><p>Current Gradle is</p></div>
-<div class="ulist"><ul><li><p>Extensible ✅</p></li><li><p>Declarative 🤔</p></li><li><p>Clear and understandable 😕</p></li></ul></div></section><section id="slide_key_principles" data-background-image="./images/gradle/bg-4.png" data-background-size="cover"><h2>Key principles</h2>
-<div class="ulist"><ul><li class="fragment"><p>Improved ease of use for regular software developers</p></li><li class="fragment"><p>Sustained flexibility for build engineers and advanced users</p></li><li class="fragment"><p>Excellent IDE integration and toolability for everyone</p></li></ul></div></section><section id="slide_disclaimers" data-background-image="./images/gradle/bg-4.png" data-background-size="cover"><h2>Disclaimers</h2>
-<div class="ulist"><ul><li class="fragment"><p>We are <em>experimenting</em></p></li><li class="fragment"><p>Running those experiments require nightly builds</p></li><li class="fragment"><p>Some IDE integrations are demonstrated outside an IDE</p></li><li class="fragment"><p>Prototypes are changing all the time and are not ready for real projects</p></li></ul></div></section><section id="slide_experiments" data-background-image="./images/gradle/bg-4.png" data-background-size="cover"><h2>Experiments</h2>
-<div class="ulist"><ul><li class="fragment"><p>Software types</p></li><li class="fragment"><p>Declarative Configuration language with integrated tooling</p></li></ul></div></section><section id="slide_example_2" data-background-image="./images/gradle/bg-4.png" data-background-size="cover"><h2>Example</h2>
+<aside class="notes"><div class="paragraph"><p>Louis</p></div></aside></section><section id="slide_gradle_9_objectives_2" data-background-image="./images/gradle/bg-4.png" data-background-size="cover"><h2>Gradle 9 objectives</h2>
+<div class="ulist"><ul><li class="fragment"><p>&#x1F680; Performance</p></li><li class="fragment"><p>&#x1F4A1; Comprehensibility</p></li><li class="fragment"><p>🐘 Miscellaneous</p></li></ul></div></section><section id="slide_gradle_9_performance" data-background-image="./images/gradle/bg-4.png" data-background-size="cover"><h2>Gradle 9 - &#x1F680; Performance</h2>
+<div class="ulist"><ul><li class="fragment"><p>Configuration Cache by default</p><div class="ulist"><ul><li class="fragment"><p>With an opt-out</p></li><li class="fragment"><p>Deprecation warning if not enabled in 8.x</p></li></ul></div></li><li class="fragment"><p>Isolated Projects as incubating</p><div class="ulist"><ul><li class="fragment"><p>As an opt-in</p></li><li class="fragment"><p>Ready for early adopters</p></li><li class="fragment"><p>Stable as a stretch goal</p></li></ul></div></li></ul></div></section><section id="slide_gradle_9_comprehensibility" data-background-image="./images/gradle/bg-4.png" data-background-size="cover"><h2>Gradle 9 - &#x1F4A1; Comprehensibility</h2>
+<div class="ulist"><ul><li class="fragment"><p>Provider API 1.0</p><div class="ulist"><ul><li><p>Feature complete for supported use cases</p></li></ul></div></li><li class="fragment"><p>Provider API Migration</p><div class="ulist"><ul><li><p>Binary compatible migration for 3rd party plugins</p></li><li><p>Source-compatible migration for local build logic</p></li></ul></div></li></ul></div></section><section id="slide_gradle_9_miscellaneous" data-background-image="./images/gradle/bg-4.png" data-background-size="cover"><h2>Gradle 9 - 🐘 Miscellaneous</h2>
+<div class="ulist"><ul><li class="fragment"><p>Kotlin Language 2.0 support in our Kotlin DSL</p></li><li class="fragment"><p>Use the K2 compiler and benefit from its performance</p></li><li class="fragment"><p>Problems API</p></li><li class="fragment"><p>Many bug fixes and improvements</p></li></ul></div></section><section id="slide_gradle_9_0" data-background-image="./images/gradle/bg-4.png" data-background-size="cover"><h2>Gradle 9.0</h2>
+<div class="ulist"><ul><li><p>Q4 2024 release (tentative)</p></li><li><p><a href="https://github.com/orgs/gradle/projects/31/views/1">gradle-roadmap</a></p></li></ul></div>
+<div class="imageblock" style=""><img src="./images/roadmap.png" alt="roadmap"></div></section><section id="slide_declarative_gradle" data-background-color="#02303a" data-background-image="./images/gradle/bg-4.png" data-background-size="cover"><h2>Declarative Gradle</h2>
+<div class="paragraph"><p>🐘</p></div>
+<aside class="notes"><div class="paragraph"><p>Paul</p></div></aside></section><section id="slide_declarative_gradle_2" data-background-image="./images/gradle/bg-4.png" data-background-size="cover"><h2>Declarative Gradle</h2>
+<div class="quoteblock"><blockquote><div class="paragraph"><p>The presence of code constructs in the software definition, such as variables, local methods and conditional expressions, makes it hard for software developers to work with the build.</p></div>
+<div class="paragraph"><p>It also makes refactoring more difficult for the IDE and other tools to implement.</p></div></blockquote></div>
+<aside class="notes"><div class="ulist"><ul><li><p>While it has long been a best practice that build scripts should be declarative, and the build logic should be kept in plugins, this is not the reality for many projects.</p></li><li><p>We’ve seen projects in the wild that mix declarative and imperative code and make build scripts that are long and complex.</p></li><li><p>Gradle-specific concepts used in build scripts are not always familiar to software developers.</p></li><li><p>This can make Gradle less approachable for developers unfamiliar with Gradle.</p></li><li><p>At the same time, it makes it difficult for the IDEs to offer reliable support for editing build scripts.</p></li></ul></div></aside></section><section id="slide_declarative_gradle_3" data-background-image="./images/gradle/bg-4.png" data-background-size="cover"><h2>Declarative Gradle</h2>
+<div class="ulist"><ul><li class="fragment"><p>Clear separation of software definition from build logic</p></li><li class="fragment"><p>Declarative configuration language</p></li><li class="fragment"><p>Raised abstraction</p></li><li class="fragment"><p>First class IDE experience</p></li></ul></div></section><section id="slide_declarative_gradle_4" data-background-image="./images/gradle/bg-4.png" data-background-size="cover"><h2>Declarative Gradle</h2>
+<div class="ulist"><ul><li class="fragment"><p>New <strong>experimental</strong> initiative</p></li><li class="fragment"><p>Working group with Google, JetBrains and Gradle.</p></li><li class="fragment"><p>First <a href="https://blog.gradle.org/declarative-gradle">blog post</a> in November 2023</p></li><li class="fragment"><p>Early <a href="https://github.com/gradle/declarative-gradle">prototypes</a> already available</p></li><li class="fragment"><p>First EAP scheduled mid-2024</p></li></ul></div></section><section id="slide_peek_at_current_prototype" data-background-image="./images/gradle/bg-4.png" data-background-size="cover"><h2>Peek at current prototype</h2>
+<div class="listingblock"><div class="title">A Java library</div>
+<div class="content"><pre class="highlightjs highlight"><code class="language-kotlin hljs" data-noescape="true" data-lang="kotlin">javaLibrary {
+    javaVersion = 21
+    dependencies {
+        implementation("com.google.guava:guava:32.1.3-jre")
+    }
+}</code></pre></div></div>
+<div class="listingblock"><div class="title">A Java application</div>
+<div class="content"><pre class="highlightjs highlight"><code class="language-kotlin hljs" data-noescape="true" data-lang="kotlin">javaApplication {
+    javaVersion = 21
+    mainClass = "com.example.App"
+    dependencies {
+        implementation("com.google.guava:guava:32.1.3-jre")
+    }
+}</code></pre></div></div>
+<div class="dlist"><dl><dt class="hdlist1">Disclaimer</dt><dd><p>This will certainly change</p></dd></dl></div></section><section id="slide_peek_at_current_prototype_2" data-background-image="./images/gradle/bg-4.png" data-background-size="cover"><h2>Peek at current prototype</h2>
 <div class="listingblock"><div class="title">An Android application</div>
-<div class="content"><pre class="highlightjs highlight"><code class="language-kotlin hljs" data-noescape="true" data-lang="kotlin"><i class="conum" data-value="1"></i><b>(1)</b>
-
-androidApplication { <i class="conum" data-value="2"></i><b>(2)</b>
+<div class="content"><pre class="highlightjs highlight"><code class="language-kotlin hljs" data-noescape="true" data-lang="kotlin">androidApplication {
     jdkVersion = 17
     compileSdk = 34
     versionCode = 8
     versionName = "0.1.2"
-    applicationId = "org.gradle.experimental.android.application" <i class="conum" data-value="3"></i><b>(3)</b>
+    applicationId = "org.gradle.experimental.android.application"
     namespace = "org.gradle.experimental.android.application"
-    dependencies { <i class="conum" data-value="4"></i><b>(4)</b>
-        implementation("com.google.guava:guava:32.1.3-jre") <i class="conum" data-value="5"></i><b>(5)</b>
+    dependencies {
+        implementation("com.google.guava:guava:32.1.3-jre")
         implementation(project(":android-util"))
     }
     buildTypes {
@@ -424,26 +375,47 @@ androidApplication { <i class="conum" data-value="2"></i><b>(2)</b>
             }
             minifyEnabled = true
         }
+        debug {
+            applicationIdSuffix = ".debug"
+        }
     }
-}</code></pre></div></div>
-<div class="colist arabic"><table><tr><td><i class="conum" data-value="1"></i><b>1</b></td><td>No plugins block</td></tr><tr><td><i class="conum" data-value="2"></i><b>2</b></td><td>Type of software this build describes</td></tr><tr><td><i class="conum" data-value="3"></i><b>3</b></td><td>Configuring a simple property</td></tr><tr><td><i class="conum" data-value="4"></i><b>4</b></td><td>Configuring a block</td></tr><tr><td><i class="conum" data-value="5"></i><b>5</b></td><td>Type-safe custom dependencies block</td></tr></table></div></section><section id="slide_two_way_tooling" data-background-image="./images/gradle/bg-4.png" data-background-size="cover"><h2>Two way tooling</h2>
-<div class="videoblock stretch"><iframe width="100%" height="100%" src="https://www.youtube.com/embed/4P0GmcmkUog?rel=0" frameborder="0" allowfullscreen></iframe></div></section><section id="slide_declarative_gradle_whats_next" data-background-image="./images/gradle/bg-4.png" data-background-size="cover"><h2>Declarative Gradle - What&#8217;s next?</h2>
-<div class="ulist"><ul><li class="fragment"><p>First EAP back in July 2024</p><div class="ulist"><ul><li><p>see <a href="https://blog.gradle.org/declarative-gradle-first-eap">blog post</a></p></li></ul></div></li><li class="fragment"><p>Second EAP in October 2024</p><div class="ulist"><ul><li><p>will allow users to experiment with their own builds</p></li><li><p>Looking for feedback from developers and build engineers</p></li></ul></div></li><li class="fragment"><p>Third EAP by the end of the year</p><div class="ulist"><ul><li><p>Exact content to be determined</p></li></ul></div></li></ul></div></section></section>
-<section><section id="slide_thank_you" data-background-color="#02303a" data-background-image="./images/gradle/bg-4-folks.png" data-background-size="cover"><h2>Thank you!</h2><table class="tableblock frame-none grid-none who-gradle" style="width:100%"><colgroup><col style="width:66.6666%"><col style="width:33.3334%"></colgroup><tbody><tr><td class="tableblock halign-center valign-middle"><div></div></td><td class="tableblock halign-center valign-middle"><div><div class="imageblock" style=""><img src="./images/presenter-alex.png" alt="presenter alex"></div>
-<div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-kotlin hljs" data-noescape="true" data-lang="kotlin">speaker {
-    name = "Alex Semin"
-    twitter = "@alllexist"
-    website = "alllex.me"
-    github = "alllex"
-}</code></pre></div></div>
-<div class="imageblock" style=""><img src="./images/presenter-louis.png" alt="presenter louis"></div>
+}</code></pre></div></div></section><section id="slide_peek_at_current_prototype_3" data-background-image="./images/gradle/bg-4.png" data-background-size="cover"><h2>Peek at current prototype</h2>
+<div class="listingblock"><div class="title">A Kotlin Multiplatform Library</div>
+<div class="content"><pre class="highlightjs highlight"><code class="language-kotlin hljs" data-noescape="true" data-lang="kotlin">kmpLibrary {
+    dependencies {
+        implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.4.1")
+    }
+    targets {
+        jvm {
+            jdkVersion = 14
+            dependencies {
+                api("org.apache.commons:commons-lang3:3.14.0")
+            }
+        }
+        js {
+            environment = "node"
+            dependencies {
+                implementation("com.squareup.sqldelight:runtime:1.5.5")
+            }
+        }
+    }
+}</code></pre></div></div></section><section id="slide_peek_at_current_prototype_4" data-background-image="./images/gradle/bg-4.png" data-background-size="cover"><h2>Peek at current prototype</h2>
+<div class="ulist"><ul><li class="fragment"><p><strong>Disclaimer:</strong> this will certainly change</p></li><li class="fragment"><p>Prototypes available at <a href="https://github.com/gradle/declarative-gradle">gradle/declarative-gradle</a></p></li><li class="fragment"><p><a href="https://github.com/gradle/nowinandroid/tree/main-declarative">Now In Android</a> fork - <code>main-declarative</code> branch</p><div class="ulist"><ul><li><p>You can import it in Android Studio</p></li><li><p>Android Studio Koala canary builds have syntax highlighting for declarative files</p></li></ul></div></li></ul></div></section><section id="slide_declarative_gradle_5" data-background-image="./images/gradle/bg-4.png" data-background-size="cover"><h2>Declarative Gradle</h2>
+<div class="ulist"><ul><li class="fragment"><p>New <strong>experimental</strong> initiative</p></li><li class="fragment"><p>Clear separation of software definition from build logic</p></li><li class="fragment"><p>Declarative configuration language</p></li><li class="fragment"><p>Raised abstraction</p></li><li class="fragment"><p>First class IDE experience</p></li><li class="fragment"><p>First EAP scheduled mid-2024</p></li></ul></div></section></section>
+<section id="slide_thank_you" data-background-color="#02303a" data-background-image="./images/gradle/bg-4-folks.png" data-background-size="cover"><h2>Thank you!</h2>
+<table class="tableblock frame-none grid-none who-gradle" style="width:100%"><colgroup><col style="width:66.6666%"><col style="width:33.3334%"></colgroup><tbody><tr><td class="tableblock halign-center valign-middle"><div></div></td><td class="tableblock halign-center valign-middle"><div><div class="imageblock" style=""><img src="./images/louis.png" alt="louis"></div>
 <div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-kotlin hljs" data-noescape="true" data-lang="kotlin">speaker {
     name = "Louis Jacomet"
     twitter = "@ljacomet"
     mastodon = "@ljacomet@foojay.social"
     github = "ljacomet"
-}</code></pre></div></div></div></td></tr></table></section><section id="slide_survey"><div class="imageblock" style=""><img src="./images/survey.png" alt="survey"></div>
-<div class="paragraph center"><p><a href="https://gradle.org/2024-developer-survey" class="bare">gradle.org/2024-developer-survey</a></p></div></section></section></div></div><script src="reveal.js/lib/js/head.min.js"></script><script src="reveal.js/js/reveal.js"></script><script>Array.prototype.slice.call(document.querySelectorAll('.slides section')).forEach(function(slide) {
+}</code></pre></div></div>
+<div class="imageblock" style=""><img src="./images/paul.jpg" alt="paul"></div>
+<div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-kotlin hljs" data-noescape="true" data-lang="kotlin">speaker {
+    name = "Paul Merlin"
+    mastodon = "@eskatos@mastodon.social"
+    github = "eskatos"
+}</code></pre></div></div></div></td></tr></table></section></div></div><script src="reveal.js/lib/js/head.min.js"></script><script src="reveal.js/js/reveal.js"></script><script>Array.prototype.slice.call(document.querySelectorAll('.slides section')).forEach(function(slide) {
   if (slide.getAttribute('data-background-color')) return;
   // user needs to explicitly say he wants CSS color to override otherwise we might break custom css or theme (#226)
   if (!(slide.classList.contains('canvas') || slide.classList.contains('background'))) return;
